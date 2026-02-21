@@ -68,9 +68,9 @@ For more information on our project structure, please refer to the [Project Stru
 
 **Run Locally**: Start the server:
 
-   ```bash
-   make start
-   ```
+```bash
+make start
+```
 
 > [!NOTE]
 > If for any reason, you have trouble running the make command, you may try the following commands:
@@ -95,9 +95,9 @@ You can also run the application using Docker. Below are the steps on how the ap
 
 **Run Locally with Docker**: Start the server:
 
-   ```bash
-   make start-docker
-   ```
+```bash
+make start-docker
+```
 
 > [!NOTE]
 > If for any reason, you have trouble running the make command, you may try the following commands:
