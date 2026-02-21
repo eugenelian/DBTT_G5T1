@@ -4,7 +4,6 @@ from langchain_openai import ChatOpenAI
 
 from workflows.components.response_synthesiser import ResponseSynthesiserComponent
 from prompts.prompt_manager import JinjaPromptManager
-from core.settings import Settings, get_settings
 from workflows.rag_workflow import RAGWorkflow
 
 from config.config import LLM_CLIENT
