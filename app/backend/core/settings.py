@@ -21,9 +21,12 @@ class Settings(BaseSettings):
     GROQ_API_KEY: str | None = None
     GROQ_MODEL: str = "llama-3.1-8b-instant"
 
+    # Tools to be enabled in Agent
+    USE_ARXIV: str = "true"
+
     # LangChain/LangSmith Configuration
     LANGCHAIN_API_KEY: str | None = None
-    LANGCHAIN_TRACING_V2: str | None = "false"
+    LANGCHAIN_TRACING_V2: str = "false"
     LANGCHAIN_PROJECT: str | None = None
 
     def get_shareable_config(self) -> dict:

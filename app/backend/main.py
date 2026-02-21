@@ -2,7 +2,12 @@ import logging
 import os
 from contextlib import asynccontextmanager
 
-from core.factories import make_llm_client, setup_langsmith_config
+from api.routers import chat
+from config.config import LLM_CLIENT
+from core.factories import (
+    make_llm_client,
+    setup_langsmith_config,
+)
 from core.settings import Settings, get_settings
 from dotenv import load_dotenv
 from fastapi import APIRouter, Depends, FastAPI, status
@@ -41,9 +46,8 @@ async def lifespan(app: FastAPI):
     setup_langsmith_config(s)
     llm_client = make_llm_client(s)
 
-    # Test LLM
-    response = await llm_client.ainvoke("Hello!")
-    logger.info("Response: %s", response)
+    # Storage in app state for future use
+    setattr(app.state, LLM_CLIENT, llm_client)
 
     logger.info("✅ Application startup complete!")
 
@@ -56,6 +60,21 @@ async def lifespan(app: FastAPI):
     # TODO: Close any active clients here
 
     logger.info("✅ Application shutdown complete!")
+
+
+def extend_routers_prefix(
+    routers: list[APIRouter], app: FastAPI, *, prefix: str = ""
+) -> None:
+    """
+    Extends the prefix of each router's endpoint.
+
+    Args:
+        routers (list[APIRouter]): A list of FastAPI routers.
+        app (FastAPI): The FastAPI application.
+        prefix (str): The prefix to be added to each router's endpoint.
+    """
+    for router in routers:
+        app.include_router(router, prefix=prefix)
 
 
 def setup_loggers(app: FastAPI) -> None:
@@ -89,8 +108,10 @@ def setup_loggers(app: FastAPI) -> None:
 def create_app() -> FastAPI:
     # Instantiate application here
     app = FastAPI(title="DBTT G5T1", lifespan=lifespan, version="0.7.2")
-    # TODO: Include any routers here
+    # Include any routers here
     app.include_router(router)
+    routers = [chat.router]
+    extend_routers_prefix(routers, app, prefix="/api")
     # Setup logging config here
     setup_loggers(app)
     return app
