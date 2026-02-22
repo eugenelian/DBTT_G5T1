@@ -22,6 +22,7 @@ class PromptManager(ABC):
 class JinjaPromptManager(PromptManager):
     JINJA_PROMPTS_DIR: str = os.path.dirname(os.path.abspath(__file__))
     _prompts_cache: dict[str, ChatPromptTemplate] = {}
+    _mandatory_args_cache: dict[str, list[str]] = {}
     _lock = threading.Lock()
 
     _env = Environment(
@@ -30,7 +31,7 @@ class JinjaPromptManager(PromptManager):
         lstrip_blocks=True,
     )
 
-    def load_prompt(self, path: str) -> ChatPromptTemplate:
+    def load_prompt(self, path: str) -> tuple[ChatPromptTemplate, list[str]]:
         """
         Loads a Jinja prompt template from a YAML file in a thread-safe manner, caching compiled templates for reuse.
 
@@ -39,19 +40,19 @@ class JinjaPromptManager(PromptManager):
 
         Returns:
             ChatPromptTemplate: The prompt template.
+            list[str]: List of mandatory arguments
         """
-        if path in self._prompts_cache:
-            return self._prompts_cache[
-                path
-            ]  # Return cached template if available to improve performance
+        if path in self._prompts_cache and path in self._mandatory_args_cache:
+            # Return cached template if available to improve performance
+            return self._prompts_cache[path], self._mandatory_args_cache[path]
 
         with (
             self._lock
         ):  # Due to ChatPromptTemplate limitation, we cannot compile concurrently.
             if (
-                path in self._prompts_cache
+                path in self._prompts_cache and path in self._mandatory_args_cache
             ):  # Double-check inside lock in case another thread already compiled it
-                return self._prompts_cache[path]
+                return self._prompts_cache[path], self._mandatory_args_cache[path]
             with open(os.path.join(self.JINJA_PROMPTS_DIR, path), "r") as f:
                 prompt_template_obj = yaml.safe_load(f)
                 prompt_template = ChatPromptTemplate.from_template(
@@ -63,8 +64,14 @@ class JinjaPromptManager(PromptManager):
                         if not var["is_required"]
                     ],
                 )
+                mandatory_args = [
+                    var["name"]
+                    for var in prompt_template_obj["input_variables"]
+                    if var["is_required"]
+                ]
                 self._prompts_cache[path] = prompt_template
-                return prompt_template
+                self._mandatory_args_cache[path] = mandatory_args
+                return prompt_template, mandatory_args
 
     def load_tools(self, *args, **kwargs) -> Any:
         pass
