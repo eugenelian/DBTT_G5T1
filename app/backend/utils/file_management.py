@@ -17,7 +17,7 @@ def create_folder(paths: list[str]):
         try:
             os.makedirs(path, exist_ok=True)
             logger.info(f"Ensured directory '{path}' exists")
-        except Exception as exc:
+        except OSError as exc:
             logger.warning("Exception faced when creating folder '%s': %s", path, exc)
 
     logger.info("Created all folders")

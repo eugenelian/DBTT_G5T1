@@ -6,7 +6,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 
 def split_docs(
-    documents=List[Document], chunk_size: int = 1000, chunk_overlap: int = 200
+    documents: List[Document], chunk_size: int = 1000, chunk_overlap: int = 200
 ):
     """
     Recursively Split Documents based on indicated chunk size and chunk overlap

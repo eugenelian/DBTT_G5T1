@@ -25,6 +25,7 @@ DATABASE_DIR = os.path.abspath(os.path.join(SCRIPT_PATH, "..", "database"))
 FAISS_DIR = os.path.abspath(os.path.join(DATABASE_DIR, "faiss"))
 create_folder(paths=[DOCS_DIR, DATABASE_DIR, FAISS_DIR])
 
+# Set up required files starting from the FAISS_DIR/{name} directory
 REQUIRED_FILES = ["index.faiss", "index.pkl", "../faiss_config.json"]
 
 logger = logging.getLogger(__name__)
@@ -83,7 +84,7 @@ def update_vector_store(
     name: str = "faiss_index", urls: bool = True, pdfs: bool = True
 ):
     """
-    Build vector store using all documents from approved sources
+    Update vector store using all documents from approved sources
 
     Args:
         name (str): Name of vector store to update. Default to `faiss_index`.
@@ -130,10 +131,12 @@ def update_vector_store(
         chunk_overlap=metadata.get("chunk_overlap", 200),
     )
 
-    # Load Vector Store
+    # Create Embeddings
     embeddings = OpenAIEmbeddings(
         model=metadata.get("embedding_model", OPENAI_EMB_MODEL)
     )
+
+    # Security risk as it involves unpickling data from the index.pkl file, ensure that .pkl is not tampered with
     vectorstore = FAISS.load_local(
         vector_store_path, embeddings, allow_dangerous_deserialization=True
     )

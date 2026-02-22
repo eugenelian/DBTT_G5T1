@@ -2,7 +2,7 @@ import json
 import logging
 import os
 import re
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 from langchain_community.document_loaders import PyPDFLoader, WebBaseLoader
 from langchain_core.documents import Document
@@ -11,6 +11,11 @@ from langchain_core.documents import Document
 SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 DOCS_DIR = os.path.abspath(os.path.join(SCRIPT_PATH, "docs"))
 APPROVED_SOURCES_PATH = os.path.join(DOCS_DIR, "approved_sources.json")
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(levelname)s - %(message)s",
+)
 
 logger = logging.getLogger(__name__)
 
@@ -35,18 +40,24 @@ def clean_text(text: str) -> str:
     return text.strip()
 
 
-def extract_docs_from_urls(ignore: List[str] = []) -> Tuple[List[Document], List[str]]:
+def extract_docs_from_urls(
+    ignore: Optional[List[str]] = None,
+) -> Tuple[List[Document], List[str]]:
     """
     Extract Documents from URLs indicated in the approved sources.json
 
     Args:
-        ignore (List[str]): List of urls to ignore
+        ignore (Optional[List[str]]): List of urls to ignore
 
     Returns:
         List[Document]: List of Documents extracted from the all the approved URLs
         List[str]: List of filenames of documents extracted
     """
     logger.info("Extracting documents from approved URLs")
+
+    # Initialize a new list inside the function if None is passed.
+    if ignore is None:
+        ignore = []
 
     # Extract all approved urls from the json
     with open(APPROVED_SOURCES_PATH, "r") as f:
@@ -75,18 +86,25 @@ def extract_docs_from_urls(ignore: List[str] = []) -> Tuple[List[Document], List
     return docs, urls
 
 
-def extract_docs_from_pdfs(ignore: List[str] = []) -> Tuple[List[Document], List[str]]:
+def extract_docs_from_pdfs(
+    ignore: Optional[List[str]] = None,
+) -> Tuple[List[Document], List[str]]:
     """
     Extract Documents from PDFs located in docs folder
 
     Args:
-        ignore (List[str]): List of filenames to ignore
+        ignore (Optional[List[str]]): List of filenames to ignore
 
     Returns:
         List[Document]: List of Documents extracted from the all the approved PDFs
         List[str]: List of filenames of documents extracted
     """
     logger.info("Extracting documents from approved PDFs")
+
+    # Initialize a new list inside the function if None is passed.
+    if ignore is None:
+        ignore = []
+
     all_documents: List[Document] = []
     filenames: List[str] = []
 
@@ -122,7 +140,7 @@ def extract_docs_from_pdfs(ignore: List[str] = []) -> Tuple[List[Document], List
 
 
 def extract_docs(
-    urls: bool = True, pdfs: bool = True, ignore: Dict[str, List[str]] = {}
+    urls: bool = True, pdfs: bool = True, ignore: Optional[Dict[str, List[str]]] = None
 ) -> Tuple[List[Document], Dict[str, List[str]]]:
     """
     Extract all documents from approved sources
@@ -130,13 +148,18 @@ def extract_docs(
     Args:
         urls (bool): Boolean whether to extract URLs
         pdfs (bool): Boolean whether to extract PDFs
-        ignore (Dict[str, List[str]]): Dictionary containing list of URLs/PDFs to avoid
+        ignore (Optional[Dict[str, List[str]]]): Dictionary containing list of URLs/PDFs to avoid
 
     Returns:
         List[Document]: List of Documents extracted from the all the approved sources
         Dict[str, List[str]]: Dictionary containing all filenames/urls of approved sources
     """
     logger.info("Extracting all documents")
+
+    # Initialize a new dict inside the function if None is passed.
+    if ignore is None:
+        ignore = {}
+
     documents: List[Document] = []
     filenames: dict[str, list] = {}
 
