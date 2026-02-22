@@ -6,7 +6,7 @@ from langchain.tools import BaseTool
 from langchain_community.tools import ArxivQueryRun
 from langchain_community.utilities import ArxivAPIWrapper
 from langchain_groq import ChatGroq
-from langchain_openai import ChatOpenAI
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
 logger = logging.getLogger(__name__)
 
@@ -25,12 +25,12 @@ def make_llm_client(s: Settings) -> ChatOpenAI | ChatGroq:
         ChatOpenAI | ChatGroq: The LLM client. Returns OpenAI client by default
     """
     try:
-        if s.OPENAI_API_KEY:
+        if s.LLM_MODEL == "OPENAI_MODEL" and s.OPENAI_API_KEY:
             logger.info(
                 "Setting up OpenAI LLM (%s) using OPENAI_API_KEY", s.OPENAI_MODEL
             )
             return ChatOpenAI(api_key=s.OPENAI_API_KEY, model=s.OPENAI_MODEL)
-        elif s.GROQ_API_KEY:
+        elif s.LLM_MODEL == "GROQ_MODEL" and s.GROQ_API_KEY:
             logger.info("Setting up Groq LLM (%s) using GROQ_API_KEY", s.GROQ_MODEL)
             return ChatGroq(api_key=s.GROQ_API_KEY, model=s.GROQ_MODEL)
         # If no OPENAI_API_KEY or GROQ_API_KEY, raise ValueError

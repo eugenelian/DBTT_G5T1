@@ -1,3 +1,4 @@
+from workflows.components.source_retrieval import SourceRetrievalComponent
 from config.config import LLM_CLIENT
 from fastapi import Depends, Request
 from langchain_groq import ChatGroq
@@ -27,13 +28,16 @@ def get_rag_workflow(
     llm_client: ChatOpenAI | ChatGroq = Depends(get_llm_client),
 ) -> RAGWorkflow:
     # Set up components
+    source_retrieval = SourceRetrievalComponent(
+        name="faiss_index"
+    )
     response_synthesiser = ResponseSynthesiserComponent(
         prompt_manager=prompt_manager,
         prompt_filename="response_synthesis.yaml",
         llm_client=llm_client,
     )
     # Set up workflow
-    rag_workflow = RAGWorkflow(response_synthesiser=response_synthesiser)
+    rag_workflow = RAGWorkflow(source_retrieval=source_retrieval, response_synthesiser=response_synthesiser)
     # Build Graph and return
     rag_workflow.build_graph()
     return rag_workflow

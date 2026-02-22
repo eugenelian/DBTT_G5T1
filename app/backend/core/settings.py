@@ -20,9 +20,10 @@ class Settings(BaseSettings):
     OPENAI_MODEL: str = "gpt-4.1-mini"
     GROQ_API_KEY: str | None = None
     GROQ_MODEL: str = "llama-3.1-8b-instant"
+    LLM_MODEL: str = "GROQ_MODEL"
 
-    # Tools to be enabled in Agent
-    USE_ARXIV: str = "true"
+    # Embedding Model
+    OPENAI_EMB_MODEL: str = "text-embedding-3-small"
 
     # LangChain/LangSmith Configuration
     LANGCHAIN_API_KEY: str | None = None

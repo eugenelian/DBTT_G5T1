@@ -11,6 +11,9 @@ class State(BaseModel):
     # User Query
     user_query: str = Field(..., description="User Query")
 
+    # Sources
+    sources: list[dict] = Field(default=[], description="List of sources extracted from vector store")
+
     # LLM Output
     content: str = Field(default=None, description="LLM Response")
 
