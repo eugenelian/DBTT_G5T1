@@ -5,12 +5,12 @@ import logging
 import os
 
 from dotenv import load_dotenv
-from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
+from langchain_openai import OpenAIEmbeddings
 
-from app.backend.utils.file_management import create_folder
 from app.backend.prepdocslib.extract_docs import extract_docs
 from app.backend.prepdocslib.split_docs import split_docs
+from app.backend.utils.file_management import create_folder
 
 # Set up ENV variables
 load_dotenv()
@@ -34,7 +34,13 @@ if not OPENAI_API_KEY:
     raise ValueError("No OpenAI API Key provided, unable to build vector store")
 
 
-def build_vector_store(name: str = "faiss_index", urls: bool = True, pdfs: bool = True, chunk_size: int = 1000, chunk_overlap: int = 200):
+def build_vector_store(
+    name: str = "faiss_index",
+    urls: bool = True,
+    pdfs: bool = True,
+    chunk_size: int = 1000,
+    chunk_overlap: int = 200,
+):
     """
     Build vector store using all documents from approved sources
 
@@ -48,7 +54,9 @@ def build_vector_store(name: str = "faiss_index", urls: bool = True, pdfs: bool 
     try:
         # Extract and split all documents
         docs, config = extract_docs(urls=urls, pdfs=pdfs)
-        chunks = split_docs(documents=docs, chunk_size=chunk_size, chunk_overlap=chunk_overlap)
+        chunks = split_docs(
+            documents=docs, chunk_size=chunk_size, chunk_overlap=chunk_overlap
+        )
 
         # Set up embeddings and vector store and return
         embeddings = OpenAIEmbeddings(model=OPENAI_EMB_MODEL)
@@ -71,7 +79,9 @@ def build_vector_store(name: str = "faiss_index", urls: bool = True, pdfs: bool 
         logger.warning("Unable to build vector store: %s", exc)
 
 
-def update_vector_store(name: str = "faiss_index", urls: bool = True, pdfs: bool = True):
+def update_vector_store(
+    name: str = "faiss_index", urls: bool = True, pdfs: bool = True
+):
     """
     Build vector store using all documents from approved sources
 
@@ -83,18 +93,29 @@ def update_vector_store(name: str = "faiss_index", urls: bool = True, pdfs: bool
     vector_store_path = os.path.abspath(os.path.join(FAISS_DIR, name))
 
     # If vector store does not exist, proceed to build and return instead
-    if (not os.path.exists(vector_store_path) or not os.path.isdir(vector_store_path) or any(not os.path.exists(os.path.join(vector_store_path, f)) for f in REQUIRED_FILES)):
+    if (
+        not os.path.exists(vector_store_path)
+        or not os.path.isdir(vector_store_path)
+        or any(
+            not os.path.exists(os.path.join(vector_store_path, f))
+            for f in REQUIRED_FILES
+        )
+    ):
         build_vector_store(name=name, urls=urls, pdfs=pdfs)
         return
-    
+
     # Load FAISS config
-    with open(os.path.join(FAISS_DIR, "faiss_config.json"), 'r') as f:
+    with open(os.path.join(FAISS_DIR, "faiss_config.json"), "r") as f:
         config: dict = json.load(f)
     logger.info("Config: %s", config)
-    
+
     # Data Extraction
     keys_to_keep = ["urls", "pdfs"]
-    docs, config_new = extract_docs(urls=urls, pdfs=pdfs, ignore={k: v for k, v in config.items() if k in keys_to_keep})
+    docs, config_new = extract_docs(
+        urls=urls,
+        pdfs=pdfs,
+        ignore={k: v for k, v in config.items() if k in keys_to_keep},
+    )
 
     # Short Circuit if no documents
     if len(docs) == 0:
@@ -120,7 +141,7 @@ def update_vector_store(name: str = "faiss_index", urls: bool = True, pdfs: bool
     # Update Config dict, considering that there are no overlaps between them
     for key in ["urls", "pdfs"]:
         config[key] = config_new.get(key, [])
-    
+
     # Save Vector Store and config json
     vectorstore.save_local(vector_store_path)
     with open(os.path.join(FAISS_DIR, "faiss_config.json"), "w") as f:
@@ -153,7 +174,7 @@ if __name__ == "__main__":
             chunk_size=args.chunk_size,
             chunk_overlap=args.chunk_overlap,
         )
-    
+
     # Handle "Update" Vector Store
     elif args.function == "update":
         update_vector_store(

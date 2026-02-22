@@ -3,9 +3,9 @@ import logging
 import os
 import re
 from typing import Dict, List, Tuple
-from langchain_core.documents import Document
 
 from langchain_community.document_loaders import PyPDFLoader, WebBaseLoader
+from langchain_core.documents import Document
 
 # Set Path Variables
 SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -13,8 +13,6 @@ DOCS_DIR = os.path.abspath(os.path.join(SCRIPT_PATH, "docs"))
 APPROVED_SOURCES_PATH = os.path.join(DOCS_DIR, "approved_sources.json")
 
 logger = logging.getLogger(__name__)
-
-
 
 
 def clean_text(text: str) -> str:
@@ -26,12 +24,14 @@ def clean_text(text: str) -> str:
 
     Args:
         text (str): Uncleaned text with any of the above issues
-    
+
     Returns:
         str: Cleaned text
     """
-    text = re.sub(r"\n{3,}", "\n\n", text)        # Replace 3+ newlines with 2
-    text = re.sub(r"[ \t]+", " ", text)           # Replace multiple spaces/tabs with single space
+    text = re.sub(r"\n{3,}", "\n\n", text)  # Replace 3+ newlines with 2
+    text = re.sub(
+        r"[ \t]+", " ", text
+    )  # Replace multiple spaces/tabs with single space
     return text.strip()
 
 
@@ -60,11 +60,10 @@ def extract_docs_from_urls(ignore: List[str] = []) -> Tuple[List[Document], List
     if len(filtered_urls) == 0:
         logger.info("No approved URLs found, exiting operation.")
         return [], []
-    
+
     # Load from dedicated websites (Assumes no more than 50 websites, else look into lazy load)
     loader = WebBaseLoader(
-        filtered_urls,
-        header_template={"User-Agent": "DBTT_G5T1_Bot/1.0"}
+        filtered_urls, header_template={"User-Agent": "DBTT_G5T1_Bot/1.0"}
     )
     docs = loader.load()
 
@@ -113,7 +112,7 @@ def extract_docs_from_pdfs(ignore: List[str] = []) -> Tuple[List[Document], List
 
                     except Exception as exc:
                         logger.warning(f"Error loading {pdf_path}: {exc}")
-                
+
                 # Append filename to config
                 else:
                     filenames.append(file)
@@ -122,7 +121,9 @@ def extract_docs_from_pdfs(ignore: List[str] = []) -> Tuple[List[Document], List
     return all_documents, filenames
 
 
-def extract_docs(urls: bool = True, pdfs: bool = True, ignore: Dict[str, List[str]] = {}) -> Tuple[List[Document], Dict[str, List[str]]]:
+def extract_docs(
+    urls: bool = True, pdfs: bool = True, ignore: Dict[str, List[str]] = {}
+) -> Tuple[List[Document], Dict[str, List[str]]]:
     """
     Extract all documents from approved sources
 
@@ -147,7 +148,7 @@ def extract_docs(urls: bool = True, pdfs: bool = True, ignore: Dict[str, List[st
         docs, names = extract_docs_from_pdfs(ignore=ignore.get("pdfs", []))
         documents.extend(docs)
         filenames["pdfs"] = names
-    
+
     logger.info("Successfully extracted all documents")
     return documents, filenames
 

@@ -1,10 +1,13 @@
 import json
 from typing import List
 
-from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-def split_docs(documents = List[Document], chunk_size: int = 1000, chunk_overlap: int = 200):
+
+def split_docs(
+    documents=List[Document], chunk_size: int = 1000, chunk_overlap: int = 200
+):
     """
     Recursively Split Documents based on indicated chunk size and chunk overlap
 
@@ -18,8 +21,7 @@ def split_docs(documents = List[Document], chunk_size: int = 1000, chunk_overlap
     """
     # Initialise recursive splitter based on preset parameters
     splitter = RecursiveCharacterTextSplitter(
-        chunk_size=chunk_size,
-        chunk_overlap=chunk_overlap
+        chunk_size=chunk_size, chunk_overlap=chunk_overlap
     )
     # Return split documents
     return splitter.split_documents(documents)
