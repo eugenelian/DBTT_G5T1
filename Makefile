@@ -16,3 +16,9 @@ lint:
 
 start:
 	$(SCRIPT_RUNNER) ./scripts/start.$(SCRIPT_SUFFIX)
+
+prepdocs-build:
+	$(SCRIPT_RUNNER) ./scripts/prepdocs_build.$(SCRIPT_SUFFIX)
+
+prepdocs-update:
+	$(SCRIPT_RUNNER) ./scripts/prepdocs_update.$(SCRIPT_SUFFIX)

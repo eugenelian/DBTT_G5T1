@@ -1,12 +1,10 @@
+from config.config import LLM_CLIENT
 from fastapi import Depends, Request
 from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
-
-from workflows.components.response_synthesiser import ResponseSynthesiserComponent
 from prompts.prompt_manager import JinjaPromptManager
+from workflows.components.response_synthesiser import ResponseSynthesiserComponent
 from workflows.rag_workflow import RAGWorkflow
-
-from config.config import LLM_CLIENT
 
 
 def get_llm_client(request: Request) -> ChatOpenAI | ChatGroq:
@@ -26,7 +24,7 @@ def get_prompt_manager() -> JinjaPromptManager:
 
 def get_rag_workflow(
     prompt_manager: JinjaPromptManager = Depends(get_prompt_manager),
-    llm_client: ChatOpenAI | ChatGroq = Depends(get_llm_client)
+    llm_client: ChatOpenAI | ChatGroq = Depends(get_llm_client),
 ) -> RAGWorkflow:
     # Set up components
     response_synthesiser = ResponseSynthesiserComponent(
@@ -35,9 +33,7 @@ def get_rag_workflow(
         llm_client=llm_client,
     )
     # Set up workflow
-    rag_workflow = RAGWorkflow(
-        response_synthesiser=response_synthesiser
-    )
+    rag_workflow = RAGWorkflow(response_synthesiser=response_synthesiser)
     # Build Graph and return
     rag_workflow.build_graph()
     return rag_workflow

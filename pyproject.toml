@@ -1,5 +1,5 @@
 [project]
-name = "dbtt-g5t1"
+name = "DBTT_G5T1"
 version = "0.1.0"
 description = "Code Repository for IS215 Digital Business (Technologies and Transformation) G5 Team 1"
 readme = "README.md"
@@ -16,6 +16,7 @@ dependencies = [
     "langchain-groq>=1.1.2",
     "langchain-openai>=1.1.10",
     "pydantic-settings>=2.13.1",
+    "pypdf>=6.7.1",
     "rich>=14.3.3",
     "uvicorn>=0.41.0",
 ]

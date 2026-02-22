@@ -28,5 +28,5 @@
   "MD051": false,
 
   // MD059/descriptive-link-text : Link text should be descriptive : https://github.com/DavidAnson/markdownlint/blob/v0.38.0/doc/md059.md
-  "MD059": false,
+  "MD059": false
 }
