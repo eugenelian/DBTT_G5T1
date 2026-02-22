@@ -1,10 +1,8 @@
 import logging
 
+from langchain.messages import AIMessage
 from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
-
-from langchain.messages import AIMessage
-
 from prompts.prompt_manager import JinjaPromptManager
 from schemas.state import State
 
@@ -35,7 +33,7 @@ class ResponseSynthesiserComponent:
 
         Args:
             state: State that contains information about "user_query"
-        
+
         Returns:
             state: Updated state containing the "content" and "usage"
         """
