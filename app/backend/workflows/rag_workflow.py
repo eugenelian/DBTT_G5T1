@@ -2,9 +2,10 @@ import logging
 from typing import Any
 
 from langgraph.graph import END, START, StateGraph
-from workflows.components.source_retrieval import SourceRetrievalComponent
+from schemas.chat import ChatResponse
 from schemas.state import State
 from workflows.components.response_synthesiser import ResponseSynthesiserComponent
+from workflows.components.source_retrieval import SourceRetrievalComponent
 
 logger = logging.getLogger(__name__)
 
@@ -30,9 +31,7 @@ class RAGWorkflow:
         graph_builder = StateGraph(State)
 
         # Include nodes
-        graph_builder.add_node(
-            "retrieve_sources", self.source_retrieval.retrieve
-        )
+        graph_builder.add_node("retrieve_sources", self.source_retrieval.retrieve)
         graph_builder.add_node(
             "synthesise_response", self.response_synthesiser.synthesize
         )
@@ -45,7 +44,8 @@ class RAGWorkflow:
         # Compile and save graph
         self.graph = graph_builder.compile()
 
-    async def run_pipeline(self, state: State):
-        response = await self.graph.ainvoke(state)
+    async def run_pipeline(self, state: State) -> ChatResponse:
+        new_state = await self.graph.ainvoke(state)
+        response = ChatResponse.model_validate(new_state)
         logger.info(response)
         return response

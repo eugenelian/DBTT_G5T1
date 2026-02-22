@@ -6,7 +6,7 @@ from langchain.tools import BaseTool
 from langchain_community.tools import ArxivQueryRun
 from langchain_community.utilities import ArxivAPIWrapper
 from langchain_groq import ChatGroq
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langchain_openai import ChatOpenAI
 
 logger = logging.getLogger(__name__)
 

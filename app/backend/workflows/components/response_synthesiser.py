@@ -1,12 +1,11 @@
 import logging
 
 from langchain.messages import AIMessage
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
 from prompts.prompt_manager import JinjaPromptManager
 from schemas.state import State
-
-from langchain_core.prompts import ChatPromptTemplate
 
 logger = logging.getLogger(__name__)
 
@@ -50,15 +49,29 @@ class ResponseSynthesiserComponent:
             # TODO: Add logic for conversation history
             args: dict = {
                 "user_query": state.user_query,
-                "sources": "\n".join([f"**Source {i+1}:** {source["page_content"].replace("\n", "\\n")}" for i, source in enumerate(state.sources)]) if len(state.sources) != 0 else None,
+                "sources": (
+                    "\n".join(
+                        [
+                            f"**Source {i+1}:** {source["page_content"].replace("\n", "\\n")}"
+                            for i, source in enumerate(state.sources)
+                        ]
+                    )
+                    if len(state.sources) != 0
+                    else None
+                ),
                 "conversation history": None,
             }
             filtered_args = {k: v for k, v in args.items() if v is not None}
-            self.prompt_manager.validate_inputs(filtered_args.keys(), self.mandatory_args)
+            self.prompt_manager.validate_inputs(
+                filtered_args.keys(), self.mandatory_args
+            )
             prompt = self.prompt_template.format_messages(**filtered_args)
             response: AIMessage = await self.llm_client.ainvoke(prompt)
-            return {"content": response.content, "usage": response.response_metadata}
+            return {
+                "content": response.content,
+                "response_metadata": response.response_metadata,
+            }
 
         except Exception as exc:
             logger.exception("Exception occurred: %s", exc)
-            return {"content": exc, "usage": {}}
+            return {"content": exc, "response_metadata": {}}

@@ -4,20 +4,24 @@ from pydantic import BaseModel, ConfigDict, Field
 class State(BaseModel):
     """A base state object for a RAG Workflow."""
 
-    # Business logic
+    # Business logic  (Required Field)
     user_id: str = Field(..., description="Unique identifier for the user.")
     session_id: str = Field(..., description="Unique identifier for the session.")
 
-    # User Query
+    # User Query (Required Field)
     user_query: str = Field(..., description="User Query")
 
     # Sources
-    sources: list[dict] = Field(default=[], description="List of sources extracted from vector store")
+    sources: list[dict] = Field(
+        default_factory=list, description="List of sources extracted from vector store"
+    )
 
     # LLM Output
-    content: str = Field(default=None, description="LLM Response")
+    content: str | None = Field(default=None, description="LLM Response")
 
     # Usage Data
-    usage: dict = Field(default={}, description="LLM Usage Data")
+    response_metadata: dict = Field(
+        default_factory=dict, description="LLM Response Metadata"
+    )
 
     model_config = ConfigDict(extra="ignore")
