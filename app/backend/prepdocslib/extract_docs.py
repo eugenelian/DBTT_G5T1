@@ -59,7 +59,7 @@ def extract_docs_from_urls(ignore: List[str] = []) -> Tuple[List[Document], List
     # Short circuit operation to return docs
     if len(filtered_urls) == 0:
         logger.info("No approved URLs found, exiting operation.")
-        return [], []
+        return [], urls
 
     # Load from dedicated websites (Assumes no more than 50 websites, else look into lazy load)
     loader = WebBaseLoader(
@@ -154,7 +154,7 @@ def extract_docs(
 
 
 if __name__ == "__main__":
-    docs = extract_docs(urls=True, pdfs=True)
+    docs, _ = extract_docs(urls=True, pdfs=True)
 
     for doc in docs:
         print(json.dumps(doc.model_dump(), indent=4))

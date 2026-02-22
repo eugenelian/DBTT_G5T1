@@ -107,6 +107,7 @@ def update_vector_store(
     # Load FAISS config
     with open(os.path.join(FAISS_DIR, "faiss_config.json"), "r") as f:
         config: dict = json.load(f)
+        metadata: dict = config.get("metadata", {})
     logger.info("Config: %s", config)
 
     # Data Extraction
@@ -125,12 +126,12 @@ def update_vector_store(
     # Data Splitting into chunks
     chunks = split_docs(
         documents=docs,
-        chunk_size=config.get("chunk_size", 1000),
-        chunk_overlap=config.get("chunk_overlap", 200),
+        chunk_size=metadata.get("chunk_size", 1000),
+        chunk_overlap=metadata.get("chunk_overlap", 200),
     )
 
     # Load Vector Store
-    embeddings = OpenAIEmbeddings(model=config.get("embedding_model", OPENAI_EMB_MODEL))
+    embeddings = OpenAIEmbeddings(model=metadata.get("embedding_model", OPENAI_EMB_MODEL))
     vectorstore = FAISS.load_local(
         vector_store_path, embeddings, allow_dangerous_deserialization=True
     )
