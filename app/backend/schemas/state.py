@@ -1,5 +1,6 @@
 from pydantic import BaseModel, ConfigDict, Field
 
+
 class State(BaseModel):
     """A base state object for a RAG Workflow."""
 
@@ -16,6 +17,4 @@ class State(BaseModel):
     # Usage Data
     usage: dict = Field(default={}, description="LLM Usage Data")
 
-    model_config = ConfigDict(
-        extra="ignore"
-    )
+    model_config = ConfigDict(extra="ignore")

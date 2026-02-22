@@ -1,15 +1,14 @@
 import logging
 from typing import Any
 
-from langgraph.graph import StateGraph, START, END
-
-from workflows.components.response_synthesiser import ResponseSynthesiserComponent
+from langgraph.graph import END, START, StateGraph
 from schemas.state import State
+from workflows.components.response_synthesiser import ResponseSynthesiserComponent
 
 logger = logging.getLogger(__name__)
 
 
-class RAGWorkflow():
+class RAGWorkflow:
     """
     The RAG workflow uses a stateful directed graph, which allows for easier customisability.
     """
@@ -23,13 +22,14 @@ class RAGWorkflow():
     ):
         self.response_synthesiser = response_synthesiser
 
-
     def build_graph(self):
         # Instantiate graph here
         graph_builder = StateGraph(State)
 
         # Include nodes
-        graph_builder.add_node("synthesise_response", self.response_synthesiser.synthesize)
+        graph_builder.add_node(
+            "synthesise_response", self.response_synthesiser.synthesize
+        )
 
         # Include Edges
         graph_builder.add_edge(START, "synthesise_response")
@@ -37,7 +37,6 @@ class RAGWorkflow():
 
         # Compile and save graph
         self.graph = graph_builder.compile()
-
 
     async def run_pipeline(self, state: State):
         response = await self.graph.ainvoke(state)
