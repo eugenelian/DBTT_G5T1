@@ -131,7 +131,9 @@ def update_vector_store(
     )
 
     # Load Vector Store
-    embeddings = OpenAIEmbeddings(model=metadata.get("embedding_model", OPENAI_EMB_MODEL))
+    embeddings = OpenAIEmbeddings(
+        model=metadata.get("embedding_model", OPENAI_EMB_MODEL)
+    )
     vectorstore = FAISS.load_local(
         vector_store_path, embeddings, allow_dangerous_deserialization=True
     )
@@ -159,8 +161,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Build FAISS Vector Store")
     parser.add_argument("--function", type=str, default="build")
     parser.add_argument("--name", type=str, default="faiss_index")
-    parser.add_argument("--urls", type=bool, default=True)
-    parser.add_argument("--pdfs", type=bool, default=True)
+    parser.add_argument("--urls", action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument("--pdfs", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--chunk_size", type=int, default=1000)
     parser.add_argument("--chunk_overlap", type=int, default=200)
 
