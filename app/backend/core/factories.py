@@ -2,9 +2,6 @@ import logging
 import os
 
 from core.settings import Settings
-from langchain.tools import BaseTool
-from langchain_community.tools import ArxivQueryRun
-from langchain_community.utilities import ArxivAPIWrapper
 from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
 
@@ -51,22 +48,3 @@ def setup_langsmith_config(s: Settings) -> None:
     if s.LANGCHAIN_TRACING_V2 == "true":
         os.environ["LANGCHAIN_TRACING_V2"] = s.LANGCHAIN_TRACING_V2
         os.environ["LANGCHAIN_PROJECT"] = s.LANGCHAIN_PROJECT
-
-
-def setup_tools(s: Settings) -> list[BaseTool]:
-    """
-    Returns list of tools that can be used by the LLM Agent.
-
-    Args:
-        s (Settings): The Pydantic settings.
-
-    Returns:
-        list[BaseTool]: List of tools that can be used by LLM Agent
-    """
-    tools = []
-    # Declaring Arxiv API Wrapper and Query Run Tool
-    if s.USE_ARXIV == "true":
-        api_wrapper_arxiv = ArxivAPIWrapper(top_k_results=3, doc_content_chars_max=500)
-        arxiv = ArxivQueryRun(api_wrapper=api_wrapper_arxiv)
-        tools.append(arxiv)
-    return tools

@@ -52,14 +52,14 @@ class ResponseSynthesiserComponent:
                 "sources": (
                     "\n".join(
                         [
-                            f"**Source {i+1}:** {source["page_content"].replace("\n", "\\n")}"
+                            f"**Source {i+1}:** {source['page_content']}"
                             for i, source in enumerate(state.sources)
                         ]
                     )
                     if len(state.sources) != 0
                     else None
                 ),
-                "conversation history": None,
+                "conversation_history": None,
             }
             filtered_args = {k: v for k, v in args.items() if v is not None}
             self.prompt_manager.validate_inputs(

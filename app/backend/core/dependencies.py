@@ -28,7 +28,10 @@ def get_rag_workflow(
     llm_client: ChatOpenAI | ChatGroq = Depends(get_llm_client),
 ) -> RAGWorkflow:
     # Set up components
-    source_retrieval = SourceRetrievalComponent(name="faiss_index")
+    source_retrieval = SourceRetrievalComponent(
+        name="faiss_index",
+        num_sources=4,
+    )
     response_synthesiser = ResponseSynthesiserComponent(
         prompt_manager=prompt_manager,
         prompt_filename="response_synthesis.yaml",

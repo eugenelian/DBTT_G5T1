@@ -40,7 +40,7 @@ class JinjaPromptManager(PromptManager):
 
         Returns:
             ChatPromptTemplate: The prompt template.
-            list[str]: List fo mandatory arguments
+            list[str]: List of mandatory arguments
         """
         if path in self._prompts_cache and path in self._mandatory_args_cache:
             # Return cached template if available to improve performance

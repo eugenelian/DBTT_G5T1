@@ -20,12 +20,13 @@ class SourceRetrievalComponent:
         os.path.join(SCRIPT_PATH, "..", "..", "database", "faiss")
     )
 
-    def __init__(self, name: str):
+    def __init__(self, name: str = "faiss_index", num_sources: int = 4):
         # Obtain settings
         s: Settings = get_settings()
 
         # Instantiate vector store path
         vector_store_path = os.path.join(type(self).FAISS_DIR, name)
+        self.num_sources = num_sources
 
         # Load FAISS config
         with open(os.path.join(type(self).FAISS_DIR, "faiss_config.json"), "r") as f:
@@ -53,9 +54,11 @@ class SourceRetrievalComponent:
             state: Updated state containing the "sources"
         """
         try:
-            sources = self.vectorstore.similarity_search(state.user_query, k=4)
+            sources = self.vectorstore.similarity_search(
+                state.user_query, k=self.num_sources
+            )
             return {"sources": [source.model_dump() for source in sources]}
 
         except Exception as exc:
-            logger.warning("Exception occurred: %s", exc)
+            logger.exception("Exception occurred: %s", exc)
             return {}
