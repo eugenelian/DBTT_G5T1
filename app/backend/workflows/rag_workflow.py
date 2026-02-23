@@ -45,7 +45,7 @@ class RAGWorkflow:
         self.graph = graph_builder.compile()
 
     async def run_pipeline(
-        self, state: State, conversation_history: List[ChatResponse]
+        self, state: dict, conversation_history: List[ChatResponse]
     ) -> ChatResponse:
         # Update state with conversation history and invoke graph
         state["conversation_history"] = [
