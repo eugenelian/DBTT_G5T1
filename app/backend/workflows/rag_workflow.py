@@ -1,5 +1,5 @@
 import logging
-from typing import Any
+from typing import Any, List
 
 from langgraph.graph import END, START, StateGraph
 from schemas.chat import ChatResponse
@@ -18,7 +18,7 @@ class RAGWorkflow:
     def __init__(
         self,
         *args: Any,
-        # TODO: Insert any components here
+        # Insert any components here
         source_retrieval: SourceRetrievalComponent,
         response_synthesiser: ResponseSynthesiserComponent,
         **kwargs: Any,
@@ -44,8 +44,24 @@ class RAGWorkflow:
         # Compile and save graph
         self.graph = graph_builder.compile()
 
-    async def run_pipeline(self, state: State) -> ChatResponse:
-        new_state = await self.graph.ainvoke(state)
+    async def run_pipeline(
+        self, state: dict, conversation_history: List[ChatResponse]
+    ) -> ChatResponse:
+        # Update state with conversation history and invoke graph
+        state_with_history = {
+            **state,
+            "conversation_history": [
+                history.model_dump() for history in conversation_history
+            ],
+        }
+        new_state = await self.graph.ainvoke(state_with_history)
+
+        # Create response object and insert
         response = ChatResponse.model_validate(new_state)
+        try:
+            await response.insert()
+        except Exception as exc:
+            logger.exception(f"Failed to save chat response to database: {exc}")
+
         logger.info(response)
         return response

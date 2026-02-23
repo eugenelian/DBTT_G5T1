@@ -73,9 +73,7 @@ template: |
   {%- if conversation_history -%}
     {{ "\n" }}
     Past Conversation History:
-    {%- for item in conversation_history -%}
-      <![CDATA[{{ item }}]]>
-    {%- endfor -%}
+    <![CDATA[{{ conversation_history }}]]>
   {%- endif -%}
   {{ "\n" }}
   User Query: <![CDATA[{{ user_query }}]]>

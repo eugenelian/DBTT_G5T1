@@ -20,7 +20,7 @@ $serverHost = "127.0.0.1"
 # Start FastAPI backend in current shell
 Write-Output "🚀 Starting FastAPI backend..."
 try {
-    uvicorn $backendAppPath --host $serverHost --port $port --reload
+    uvicorn $backendAppPath --host $serverHost --port $port
 } catch {
     Write-Error "❌ Failed to start backend"
     exit 2
