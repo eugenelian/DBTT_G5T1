@@ -48,10 +48,13 @@ class RAGWorkflow:
         self, state: dict, conversation_history: List[ChatResponse]
     ) -> ChatResponse:
         # Update state with conversation history and invoke graph
-        state["conversation_history"] = [
-            history.model_dump() for history in conversation_history
-        ]
-        new_state = await self.graph.ainvoke(state)
+        state_with_history = {
+            **state,
+            "conversation_history": [
+                history.model_dump() for history in conversation_history
+            ],
+        }
+        new_state = await self.graph.ainvoke(state_with_history)
 
         # Create response object and insert
         response = ChatResponse.model_validate(new_state)
