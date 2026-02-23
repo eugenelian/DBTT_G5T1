@@ -55,7 +55,10 @@ class RAGWorkflow:
 
         # Create response object and insert
         response = ChatResponse.model_validate(new_state)
-        await response.insert()
+        try:
+            await response.insert()
+        except Exception as exc:
+            logger.exception(f"Failed to save chat response to database: {exc}")
 
         logger.info(response)
         return response
