@@ -50,22 +50,18 @@ class ResponseSynthesiserComponent:
                 "user_query": state.user_query,
                 "sources": (
                     "\n".join(
-                        [
-                            f"**Source {i+1}:** {source['page_content']}"
-                            for i, source in enumerate(state.sources)
-                        ]
+                        f"**Source {i+1}:** {source['page_content']}"
+                        for i, source in enumerate(state.sources)
                     )
-                    if len(state.sources) != 0
+                    if state.sources
                     else None
                 ),
                 "conversation_history": (
                     "\n".join(
-                        [
-                            f"**User:** {history.get("user_query")}\n**Assistant:** {history.get("content")}"
-                            for history in state.conversation_history
-                        ]
+                        f"**User:** {history.get('user_query')}\n**Assistant:** {history.get('content')}"
+                        for history in state.conversation_history
                     )
-                    if len(state.conversation_history) != 0
+                    if state.conversation_history
                     else None
                 ),
             }
