@@ -18,7 +18,7 @@ class RAGWorkflow:
     def __init__(
         self,
         *args: Any,
-        # TODO: Insert any components here
+        # Insert any components here
         source_retrieval: SourceRetrievalComponent,
         response_synthesiser: ResponseSynthesiserComponent,
         **kwargs: Any,
@@ -46,6 +46,10 @@ class RAGWorkflow:
 
     async def run_pipeline(self, state: State) -> ChatResponse:
         new_state = await self.graph.ainvoke(state)
+
+        # Create response object and insert
         response = ChatResponse.model_validate(new_state)
+        await response.insert()
+
         logger.info(response)
         return response

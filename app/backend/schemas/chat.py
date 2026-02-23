@@ -1,6 +1,9 @@
+from datetime import datetime
 from typing import List, Optional
 
+from beanie import Document
 from pydantic import UUID4, BaseModel, ConfigDict, Field, field_serializer
+from schemas import now_utc
 from schemas.source import Source
 from schemas.usage import ResponseMetadata
 
@@ -17,10 +20,13 @@ class ChatRequest(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
 
-class ChatResponse(BaseModel):
+class ChatResponse(Document):
     # Business logic (Required Field)
     user_id: str = Field(..., description="Unique identifier for the user.")
     session_id: str = Field(..., description="Unique identifier for the session.")
+    create_datetime: datetime = Field(
+        default_factory=now_utc, description="UTC Datetime that document was created"
+    )
 
     # User Query (Required Field)
     user_query: str = Field(..., description="User Query")
@@ -37,5 +43,8 @@ class ChatResponse(BaseModel):
     response_metadata: ResponseMetadata = Field(
         default_factory=ResponseMetadata, description="LLM Response Metadata"
     )
+
+    class Settings:
+        name = "chat_responses"
 
     model_config = ConfigDict(extra="ignore")
