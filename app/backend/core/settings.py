@@ -32,7 +32,7 @@ class Settings(BaseSettings):
 
     # MongoDB Cluster
     MONGODB_URI: str | None = None
-    DB_NAME: str = "chatbot_responses"
+    DB_NAME: str = "chatbot_db"
 
     def get_shareable_config(self) -> dict:
         config = super().model_dump()
