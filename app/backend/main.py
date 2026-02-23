@@ -9,6 +9,7 @@ from core.factories import (
     setup_langsmith_config,
 )
 from core.settings import Settings, get_settings
+from database.mongodb import init_db
 from dotenv import load_dotenv
 from fastapi import APIRouter, Depends, FastAPI, status
 from fastapi.responses import JSONResponse
@@ -49,6 +50,9 @@ async def lifespan(app: FastAPI):
     # Storage in app state for future use
     setattr(app.state, LLM_CLIENT, llm_client)
 
+    # Init DB here
+    pymongo_client = await init_db(s)
+
     logger.info("✅ Application startup complete!")
 
     # Hand over control to FastAPI
@@ -57,7 +61,8 @@ async def lifespan(app: FastAPI):
     # Shutdown
     logger.info("🚀 Application shutdown: Closing clients...")
 
-    # TODO: Close any active clients here
+    # Close any active clients here
+    await pymongo_client.close()
 
     logger.info("✅ Application shutdown complete!")
 

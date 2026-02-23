@@ -24,8 +24,8 @@ def get_prompt_manager() -> JinjaPromptManager:
 
 
 def get_rag_workflow(
-    prompt_manager: JinjaPromptManager = Depends(get_prompt_manager),
     llm_client: ChatOpenAI | ChatGroq = Depends(get_llm_client),
+    prompt_manager: JinjaPromptManager = Depends(get_prompt_manager),
 ) -> RAGWorkflow:
     # Set up components
     source_retrieval = SourceRetrievalComponent(
@@ -33,9 +33,9 @@ def get_rag_workflow(
         num_sources=4,
     )
     response_synthesiser = ResponseSynthesiserComponent(
+        llm_client=llm_client,
         prompt_manager=prompt_manager,
         prompt_filename="response_synthesis.yaml",
-        llm_client=llm_client,
     )
     # Set up workflow
     rag_workflow = RAGWorkflow(
