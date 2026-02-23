@@ -46,7 +46,6 @@ class ResponseSynthesiserComponent:
         """
         try:
             # Craft prompt including user query, content from retrieved sources and conversation history.
-            # TODO: Add logic for conversation history
             args: dict = {
                 "user_query": state.user_query,
                 "sources": (
@@ -59,7 +58,16 @@ class ResponseSynthesiserComponent:
                     if len(state.sources) != 0
                     else None
                 ),
-                "conversation_history": None,
+                "conversation_history": (
+                    "\n".join(
+                        [
+                            f"**User:** {history.get("user_query")}\n**Assistant:** {history.get("content")}"
+                            for history in state.conversation_history
+                        ]
+                    )
+                    if len(state.conversation_history) != 0
+                    else None
+                ),
             }
             filtered_args = {k: v for k, v in args.items() if v is not None}
             self.prompt_manager.validate_inputs(

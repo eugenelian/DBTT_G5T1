@@ -11,6 +11,12 @@ class State(BaseModel):
     # User Query (Required Field)
     user_query: str = Field(..., description="User Query")
 
+    # Conversation History
+    conversation_history: list[dict] = Field(
+        default_factory=list,
+        description="List of conversation history within the same session",
+    )
+
     # Sources
     sources: list[dict] = Field(
         default_factory=list, description="List of sources extracted from vector store"

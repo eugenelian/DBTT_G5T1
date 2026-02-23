@@ -1,5 +1,5 @@
 import logging
-from typing import Any
+from typing import Any, List
 
 from langgraph.graph import END, START, StateGraph
 from schemas.chat import ChatResponse
@@ -44,7 +44,13 @@ class RAGWorkflow:
         # Compile and save graph
         self.graph = graph_builder.compile()
 
-    async def run_pipeline(self, state: State) -> ChatResponse:
+    async def run_pipeline(
+        self, state: State, conversation_history: List[ChatResponse]
+    ) -> ChatResponse:
+        # Update state with conversation history and invoke graph
+        state["conversation_history"] = [
+            history.model_dump() for history in conversation_history
+        ]
         new_state = await self.graph.ainvoke(state)
 
         # Create response object and insert
