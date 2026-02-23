@@ -4,6 +4,7 @@ from typing import List
 from beanie import init_beanie
 from core.settings import Settings
 from pymongo import AsyncMongoClient
+from pymongo.errors import PyMongoError
 from schemas.chat import ChatResponse
 
 # Pre-defined fields
@@ -37,7 +38,8 @@ async def init_db(s: Settings):
             database=client.get_database(s.DB_NAME), document_models=DOCUMENT_MODELS
         )
         return client
-    except Exception as exc:
+
+    except PyMongoError as exc:
         raise ValueError(f"Unable to set up PyMongo client: {exc}")
 
 
