@@ -47,11 +47,11 @@ async def lifespan(app: FastAPI):
     setup_langsmith_config(s)
     llm_client = make_llm_client(s)
 
-    # Init DB here
-    pymongo_client = await init_db(s)
-
     # Storage in app state for future use
     setattr(app.state, LLM_CLIENT, llm_client)
+
+    # Init DB here
+    pymongo_client = await init_db(s)
 
     logger.info("✅ Application startup complete!")
 
@@ -61,7 +61,7 @@ async def lifespan(app: FastAPI):
     # Shutdown
     logger.info("🚀 Application shutdown: Closing clients...")
 
-    # TODO: Close any active clients here
+    # Close any active clients here
     await pymongo_client.close()
 
     logger.info("✅ Application shutdown complete!")
