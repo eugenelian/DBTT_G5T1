@@ -23,7 +23,7 @@ Code Repository for IS215 Digital Business (Technologies and Transformation) G5 
 - [Git](https://git-scm.com/downloads)
 - [PowerShell 7+ (pwsh)](https://github.com/powershell/powershell) — For Windows users only.
   - Ensure you can run `pwsh.exe` from a PowerShell terminal. If this fails, you likely need to upgrade PowerShell.
-- [uv](https://docs.astral.sh/uv/getting-started/installation/) — or other [alternatives](./docs/ALTERNATIVE_PYTHON_PACKAGE_MANAGERS.md).
+- [uv](https://docs.astral.sh/uv/getting-started/installation/)
   - [Bump My Version](https://callowayproject.github.io/bump-my-version/tutorials/getting-started/) - Recommended to install if you are already using uv. Otherwise, this is optional.
 
 ### Create a Virtual Environment <a id="create-a-virtual-environment"></a>
@@ -113,8 +113,6 @@ make start-docker
 > ```powershell
 > ./scripts/start_docker.ps1
 > ```
-
-For more information on how to run the application using Docker, refer to the [Running Locally with Docker](./docs/RUNNING_LOCALLY_WITH_DOCKER.md) guide.
 
 ## Submission Preparation <a id="submission-preparation"></a>
 
