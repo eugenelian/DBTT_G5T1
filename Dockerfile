@@ -14,17 +14,16 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /usr/local/bin/
 # Set the working directory in the container
 WORKDIR /app
 
-# Install curl (for healthchecks) and clean up
-RUN apt-get update && apt-get install -y --no-install-recommends curl \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# Install curl (for healthchecks), CA certificates for TLS + Proper Certificate Validation and clean up
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends curl ca-certificates && \
+    update-ca-certificates && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Copy and install dependencies first for caching efficiency
 COPY pyproject.toml uv.lock* ./
 RUN uv sync --no-dev --frozen --no-cache
-
-# Install CA certificates for TLS + Proper Certificate Validation
-RUN apt-get update && apt-get install -y ca-certificates && update-ca-certificates
 
 # Copy the rest of the application code
 COPY . /app
