@@ -11,7 +11,7 @@ To get a better sense of our project, here is the project structure:
     - [`api/`](../app/backend/api/): contains the endpoints for the application.
 
       - [`routers/`](../app/backend/api/routers/): contains the routers for the endpoints in the application.
-    
+
     - [`config/`](../app/backend/config/): contains the app states and configurations for prettier modules.
 
     - [`core/`](../app/backend/core/): contains the core logic, dependencies and configuration for the application.
@@ -55,5 +55,7 @@ To get a better sense of our project, here is the project structure:
   - [`prepdocs_build.*`](../scripts/prepdocs_build.sh): contains the bash and PowerShell scripts for building the vector store based on the approved_sources.json.
 
   - [`prepdocs_update.*`](../scripts/prepdocs_update.sh): contains the bash and PowerShell scripts for updating the vector store based on the approved_sources.json (Cost-efficiency).
+
+  - [`start_docker.*`](../scripts/start_docker.sh): contains the bash and PowerShell scripts to build the docker network.
 
   - [`start.*`](../scripts/start.sh): contains the bash and PowerShell scripts to start the backend server.

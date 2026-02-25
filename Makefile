@@ -17,6 +17,9 @@ lint:
 start:
 	$(SCRIPT_RUNNER) ./scripts/start.$(SCRIPT_SUFFIX)
 
+start-docker:
+	$(SCRIPT_RUNNER) ./scripts/start_docker.$(SCRIPT_SUFFIX)
+
 prepdocs-build:
 	$(SCRIPT_RUNNER) ./scripts/prepdocs_build.$(SCRIPT_SUFFIX)
 
