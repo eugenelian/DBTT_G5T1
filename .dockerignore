@@ -178,8 +178,8 @@ cython_debug/
 .pypirc
 
 # Docker-related files
-Dockerfile
-.dockerignore
+# Dockerfile
+# .dockerignore
 
 # Git-related files
 .git/
