@@ -11,7 +11,7 @@ To get a better sense of our project, here is the project structure:
     - [`api/`](../app/backend/api/): contains the endpoints for the application.
 
       - [`routers/`](../app/backend/api/routers/): contains the routers for the endpoints in the application.
-    
+
     - [`config/`](../app/backend/config/): contains the app states and configurations for prettier modules.
 
     - [`core/`](../app/backend/core/): contains the core logic, dependencies and configuration for the application.
@@ -23,16 +23,6 @@ To get a better sense of our project, here is the project structure:
     - [`prompts/`](../app/backend/prompts/): contains the prompt logic.
 
     - [`schemas/`](../app/backend/schemas/): contains the Pydantic schemas used in the endpoints.
-
-    - [`tests/`](../app/backend/tests/): contains the tests for the backend.
-
-      - [`unit/`](../app/backend/tests/unit/): contains the unit tests for the backend.
-
-        - [`test_api/`](../app/backend/tests/unit/test_api/): contains the tests for the endpoints in the backend.
-
-        - [`test_prepdocslib/`](../app/backend/tests/unit/test_prepdocslib/): contains the tests for the data preparation and ingestion logic.
-
-        - [`test_workflows/`](../app/backend/tests/unit/test_workflows/): contains the tests for the workflow logic.
 
     - [`utils/`](../app/backend/utils/): contains the utility functions or decorators for the backend.
 
@@ -55,5 +45,7 @@ To get a better sense of our project, here is the project structure:
   - [`prepdocs_build.*`](../scripts/prepdocs_build.sh): contains the bash and PowerShell scripts for building the vector store based on the approved_sources.json.
 
   - [`prepdocs_update.*`](../scripts/prepdocs_update.sh): contains the bash and PowerShell scripts for updating the vector store based on the approved_sources.json (Cost-efficiency).
+
+  - [`start_docker.*`](../scripts/start_docker.sh): contains the bash and PowerShell scripts to build the docker network.
 
   - [`start.*`](../scripts/start.sh): contains the bash and PowerShell scripts to start the backend server.
