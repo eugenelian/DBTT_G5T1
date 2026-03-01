@@ -16,6 +16,8 @@ dependencies = [
     "langchain-core>=1.2.14",
     "langchain-groq>=1.1.2",
     "langchain-openai>=1.1.10",
+    "openpyxl>=3.1.5",
+    "pandas>=3.0.1",
     "pydantic-settings>=2.13.1",
     "pypdf>=6.7.1",
     "rich>=14.3.3",
@@ -30,4 +32,9 @@ format=[
     "nbqa==1.9.1",
     "pre-commit>=4.5.1",
     "ruff==0.11.10",
+]
+notebooks = [
+    "matplotlib>=3.10.8",
+    "pyreadr>=0.5.4",
+    "scikit-learn>=1.8.0",
 ]
