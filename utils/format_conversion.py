@@ -7,7 +7,6 @@ from file_management import create_folder
 from pandas import DataFrame
 
 # Set up logger
-logging.basicConfig(level=logging.INFO, format="%(name)s:\t%(message)s")
 logger = logging.getLogger(__name__)
 
 # Set up default data path
@@ -27,7 +26,7 @@ def convert_rdata_to_csv(
     Args:
         file_name (str): Name of .rdata file to be converted.
         dir_path (str): Path of directory to find the file from. Defaults to '/data' directory.
-        save_file_path (str): Path to save directory to. Defaults to '/data/<file_name>.csv'.
+        save_file_path (str): Path to save directory to. Defaults to the same directory as the input file with a .csv extension.
     """
     # Check for wrong datatype
     if not file_name.endswith(".rdata"):
@@ -49,7 +48,7 @@ def convert_rdata_to_csv(
 
     # Get the df object
     df: DataFrame = result.get("df")
-    if not df:
+    if df is None:
         raise ValueError("Key 'df' not present in file, please use a valid key.")
 
     # Save to CSV
@@ -61,6 +60,9 @@ def convert_rdata_to_csv(
 
 
 if __name__ == "__main__":
+    # Settign up logger config
+    logging.basicConfig(level=logging.INFO, format="%(name)s:\t%(message)s")
+
     # Set up configurations
     file_name = "5v_cleandf.rdata"
     save_file_name = "Hospital_Triage_and_Patient_History_Data.csv"
