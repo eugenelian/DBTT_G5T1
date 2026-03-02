@@ -60,7 +60,7 @@ def convert_rdata_to_csv(
 
 
 if __name__ == "__main__":
-    # Settign up logger config
+    # Setting up logger config
     logging.basicConfig(level=logging.INFO, format="%(name)s:\t%(message)s")
 
     # Set up configurations
