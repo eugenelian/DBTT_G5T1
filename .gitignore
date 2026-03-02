@@ -207,4 +207,10 @@ marimo/_lsp/
 __marimo__/
 
 # Data Files
+data/*.csv
+data/*.rdata
+data/*.xlsx
+data/*.xls
+
+# Compiled PDFs of documentation
 app/backend/prepdocslib/docs/*.pdf
