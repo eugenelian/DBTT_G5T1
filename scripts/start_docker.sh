@@ -16,4 +16,7 @@ trap cleanup EXIT
 
 echo "🚀 Starting backend (Docker)..."
 
-docker compose $COMPOSE_FILES up --build
+docker compose $COMPOSE_FILES up --build -d
+
+echo ""
+echo "✔️ Started backend (Docker) successfully"

@@ -18,6 +18,17 @@ services:
       start_period: 10s
     restart: unless-stopped
 
+  ai-clinical-assistant-frontend:
+    container_name: ai-clinical-assistant-frontend
+    build:
+      context: ./app/frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - ai-clinical-assistant-backend
+    restart: unless-stopped
+
 networks:
   default:
     name: ai-clinical-assistant-network

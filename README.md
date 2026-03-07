@@ -114,6 +114,12 @@ make start-docker
 > ./scripts/start_docker.ps1
 > ```
 
+To stop the server, run:
+
+```bash
+docker compose -f docker-compose.yaml -f docker-compose.dev.yaml down
+```
+
 ## Submission Preparation <a id="submission-preparation"></a>
 
 1. Running formatting checker prior to committing can be done by running:
