@@ -21,8 +21,8 @@ services:
   ai-clinical-assistant-frontend:
     container_name: ai-clinical-assistant-frontend
     build:
-      context: ./app/frontend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: app/frontend/Dockerfile
     ports:
       - "3000:80"
     env_file:
