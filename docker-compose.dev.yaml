@@ -6,9 +6,9 @@ services:
       context: .
       dockerfile: app/backend/Dockerfile
     ports:
-      - "8000:8000"   # same as prod, can be overridden if needed
+      - "8000:8000" # same as prod, can be overridden if needed
     volumes:
-      - ./app/backend:/app/backend   # mount code for live reload
+      - ./app/backend:/app/backend # mount code for live reload
     env_file:
       - .env
     environment:
@@ -24,7 +24,7 @@ services:
     ports:
       - "3000:80"
     volumes:
-      - ./app/frontend:/app/frontend   # optional: live changes in dev
+      - ./app/frontend:/app/frontend # optional: live changes in dev
     environment:
       ENV_TYPE: development
     depends_on:
