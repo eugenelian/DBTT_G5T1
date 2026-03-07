@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Stethoscope, Sparkles, X } from "lucide-react";
 import { useState } from "react";
+import ReactMarkdown from "react-markdown";
 
 const symptomsList = [
   "Fever",
@@ -29,6 +30,18 @@ const symptomsList = [
   "Loss of Appetite"
 ];
 
+function parseAssistantResponse(text: string) {
+  const cleaned = text.replace(/\\n/g, "\n");
+
+  const match = cleaned.match(/<follow_up_question>(.*?)<\/follow_up_question>/s);
+
+  const followUpQuestion = match ? match[1].trim() : null;
+
+  const markdownContent = cleaned.replace(/<[^>]+>/g, "").trim();
+
+  return { markdownContent, followUpQuestion };
+}
+
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 const Diagnosis = () => {
@@ -48,13 +61,14 @@ const Diagnosis = () => {
     updatePatientSymptoms(patient.id, selectedSymptoms, remarks);
     setLoading(true);
     try {
-      const res = await fetch(`${BASE_URL}/api/v1/diagnosis`, {
+      const res = await fetch(`${BASE_URL}/api/v1/chat/diagnosis`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ patient_id: patient.id, symptoms: selectedSymptoms, remarks })
+        body: JSON.stringify({ symptoms: selectedSymptoms, remarks: remarks })
       });
       const data = await res.json();
-      setDiagnosisResult(data.diagnosis || data.result || JSON.stringify(data));
+      const parsed = parseAssistantResponse(data.content || "No response");
+      setDiagnosisResult(parsed.markdownContent);
     } catch {
       setDiagnosisResult("⚠️ An error occurred while running the diagnosis. Please try again later.");
     } finally {
@@ -114,7 +128,9 @@ const Diagnosis = () => {
           {diagnosisResult && (
             <div className="glass-card rounded-xl p-5 border-l-4 border-l-primary">
               <h3 className="font-display font-semibold text-sm mb-2">AI Diagnosis Result</h3>
-              <p className="text-sm text-foreground/90 whitespace-pre-wrap">{diagnosisResult}</p>
+              <p className="text-sm text-foreground/90 whitespace-pre-wrap">
+                <ReactMarkdown>{diagnosisResult}</ReactMarkdown>
+              </p>
             </div>
           )}
         </div>
