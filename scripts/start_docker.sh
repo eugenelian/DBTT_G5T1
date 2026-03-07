@@ -3,7 +3,7 @@
 # Set strict error handling
 set -euo pipefail
 
-COMPOSE_FILES="-f docker-compose.yaml -f docker-compose.dev.yaml"
+COMPOSE_FILES="-f docker-compose.yaml"
 
 cleanup() {
   echo ""
