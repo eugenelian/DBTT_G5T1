@@ -3,7 +3,7 @@
 # Set strict error handling
 set -euo pipefail
 
-COMPOSE_FILES="-f docker-compose.yaml -f docker-compose.dev.yaml"
+COMPOSE_FILES="-f docker-compose.yaml"
 
 cleanup() {
   echo ""
@@ -16,4 +16,7 @@ trap cleanup EXIT
 
 echo "🚀 Starting backend (Docker)..."
 
-docker compose $COMPOSE_FILES up --build
+docker compose $COMPOSE_FILES up --build -d
+
+echo ""
+echo "✔️ Started backend (Docker) successfully"

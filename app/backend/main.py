@@ -2,7 +2,7 @@ import logging
 import os
 from contextlib import asynccontextmanager
 
-from api.routers import chat
+from api.routers import analytics, chat
 from config.config import LLM_CLIENT
 from core.factories import (
     make_llm_client,
@@ -12,6 +12,7 @@ from core.settings import Settings, get_settings
 from database.mongodb import init_db
 from dotenv import load_dotenv
 from fastapi import APIRouter, Depends, FastAPI, status
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from rich.logging import RichHandler
 
@@ -113,9 +114,17 @@ def setup_loggers(app: FastAPI) -> None:
 def create_app() -> FastAPI:
     # Instantiate application here
     app = FastAPI(title="DBTT G5T1", lifespan=lifespan, version="0.7.2")
+    # Set up CORS middleware here
+    # TODO: Restrict allowed origins here
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
     # Include any routers here
     app.include_router(router)
-    routers = [chat.router]
+    routers = [chat.router, analytics.router]
     extend_routers_prefix(routers, app, prefix="/api")
     # Setup logging config here
     setup_loggers(app)
