@@ -9,21 +9,29 @@ cd "${0%/*}" || exit 1
 
 cd ../
 
+# Load env
 # ./scripts/load_python_env.sh
 
+
+# Build frontend
+echo "🚀 Starting frontend (Vite dev server)..."
 cd ./app/frontend
 
-# TODO: Build frontend
+# Install dependencies if needed
+# npm install
 
+# Start frontend in background
+npm run dev -- --host 0.0.0.0 --port 5173 &
+FRONTEND_PID=$!
+
+
+# Build backend
 echo "🚀 Starting backend..."
-
 cd ../backend
 
 port=8000
 host=127.0.0.1
-uvicorn "main:app" --host "$host" --port "$port" --reload
-out=$?
-if [ $out -ne 0 ]; then
-    echo "❌ Failed to start backend"
-    exit $out
-fi
+uvicorn "main:app" --host "$host" --port "$port" --reload &
+BACKEND_PID=$!
+
+wait $FRONTEND_PID $BACKEND_PID
