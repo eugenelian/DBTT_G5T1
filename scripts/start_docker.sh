@@ -14,9 +14,9 @@ cleanup() {
 # Run cleanup on script exit (Ctrl+C, error, normal exit)
 trap cleanup EXIT
 
-echo "🚀 Starting backend (Docker)..."
+echo "🚀 Starting Docker..."
 
 docker compose $COMPOSE_FILES up --build -d
 
 echo ""
-echo "✔️ Started backend (Docker) successfully"
+echo "✔️ Started Docker successfully"

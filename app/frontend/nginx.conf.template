@@ -1,17 +1,17 @@
 server {
     listen 80;
-    server_name localhost;
 
     root /usr/share/nginx/html;
     index index.html;
 
-    # SPA fallback for all frontend routes
+    # SPA fallback for frontend routes
     location / {
         try_files $uri /index.html;
     }
 
-    # Optional: proxy API requests to backend if needed
+    # Proxy API calls to backend
     location /api/ {
+        resolver 127.0.0.11 valid=30s;   # e.g. Docker's internal DNS
         proxy_pass ${VITE_API_URL};
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
