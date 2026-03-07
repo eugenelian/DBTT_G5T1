@@ -41,7 +41,7 @@ def extract_df_from_csv(filename: str) -> DataFrame:
         FileNotFoundError: If file cannot be found.
 
     Returns:
-        DataFrame: DataFrame containing the
+        DataFrame: DataFrame containing the data from the CSV file.
     """
     # Exception check for .csv extension
     if not filename.endswith(".csv"):

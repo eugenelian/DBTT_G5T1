@@ -72,7 +72,7 @@ const Chatbot = () => {
         ...prev,
         {
           role: "assistant",
-          content: "⚠️ Could not reach the server. Make sure the backend is running on localhost:8000."
+          content: "⚠️ An error occurred. Please try again later."
         }
       ]);
     } finally {

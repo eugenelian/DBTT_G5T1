@@ -115,6 +115,7 @@ def create_app() -> FastAPI:
     # Instantiate application here
     app = FastAPI(title="DBTT G5T1", lifespan=lifespan, version="0.7.2")
     # Set up CORS middleware here
+    # TODO: Restrict allowed origins here
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],

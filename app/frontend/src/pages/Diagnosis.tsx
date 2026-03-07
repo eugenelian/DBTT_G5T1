@@ -56,7 +56,7 @@ const Diagnosis = () => {
       const data = await res.json();
       setDiagnosisResult(data.diagnosis || data.result || JSON.stringify(data));
     } catch {
-      setDiagnosisResult("⚠️ Could not reach the server. Make sure the backend is running on localhost:8000.");
+      setDiagnosisResult("⚠️ An error occurred while running the diagnosis. Please try again later.");
     } finally {
       setLoading(false);
     }

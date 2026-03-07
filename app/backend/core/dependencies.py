@@ -55,6 +55,16 @@ def get_rag_workflow(
     return rag_workflow
 
 
+# Chest Pain Mapping between types and name
+CHEST_PAIN_MAP: dict[int, str] = {
+    0: "Asymptomatic",
+    1: "Atypical Angina",
+    2: "Non-Anginal",
+    3: "Typical Angina",
+    4: "Severe Angina",
+}
+
+
 def get_patient_data() -> DataFrame | None:
     # Indicate filename here to not expose to frontend for changes
     filename: str = "patient_priority_modified.csv"
@@ -90,14 +100,6 @@ def get_patient_data() -> DataFrame | None:
         labels=["Underweight", "Normal", "Overweight", "Obese"],
         right=False,
     )
-
-    CHEST_PAIN_MAP = {
-        0: "Asymptomatic",
-        1: "Atypical Angina",
-        2: "Non-Anginal",
-        3: "Typical Angina",
-        4: "Severe Angina",
-    }
     df["chest_pain_label"] = df["chest pain type"].map(CHEST_PAIN_MAP).fillna("Unknown")
 
     # Returns DataFrame here

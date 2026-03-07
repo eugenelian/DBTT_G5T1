@@ -82,7 +82,7 @@ const Analytics = () => {
     return (
       <PageLayout title={PAGE_TITLE} subtitle={PAGE_SUBTITLE}>
         <div className="flex flex-col items-center justify-center py-20 gap-3">
-          <div className="animate-spin w-10 h-10 border-3 border-primary border-t-transparent rounded-full" />
+          <div className="animate-spin w-10 h-10 border-2 border-primary border-t-transparent rounded-full" />
           <p className="text-sm text-muted-foreground">Fetching latest analytics…</p>
         </div>
       </PageLayout>
