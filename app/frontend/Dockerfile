@@ -10,6 +10,10 @@ RUN npm install
 # Copy the rest of the frontend source
 COPY app/frontend ./
 
+# Set environment variables
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
+
 RUN npm run build
 
 # ---------- Production image ----------
