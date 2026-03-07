@@ -1,5 +1,6 @@
 import logging
 
+import numpy as np
 import pandas as pd
 from config.config import LLM_CLIENT
 from fastapi import Depends, Request
@@ -68,23 +69,26 @@ def get_patient_data() -> DataFrame | None:
     # Modifies DataFrame to enhance data
     df["age_group"] = pd.cut(
         df["age"],
-        bins=[0, 40, 50, 60, 70, 200],
-        labels=["<40", "40-50", "50-60", "60-70", "70+"],
+        bins=[0, 30, 40, 50, 60, 70, np.inf],
+        labels=["<30", "30-40", "40-50", "50-60", "60-70", "70+"],
+        right=False,
     )
     df["bp_category"] = pd.cut(
         df["blood pressure"],
-        bins=[0, 120, 130, 140, 999],
+        bins=[0, 120, 130, 140, np.inf],
         labels=[
             "Normal (<120)",
             "Elevated (120-129)",
             "Stage 1 (130-139)",
             "Stage 2 (≥140)",
         ],
+        right=False,
     )
     df["bmi_category"] = pd.cut(
         df["bmi"],
-        bins=[0, 18.5, 25, 30, 999],
+        bins=[0, 18.5, 25, 30, np.inf],
         labels=["Underweight", "Normal", "Overweight", "Obese"],
+        right=False,
     )
 
     CHEST_PAIN_MAP = {
