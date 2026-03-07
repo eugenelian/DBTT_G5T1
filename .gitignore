@@ -214,3 +214,6 @@ data/*.xls
 
 # Compiled PDFs of documentation
 app/backend/prepdocslib/docs/*.pdf
+
+# Frontend (Do not ignore lib custom functions)
+!app/frontend/src/lib
