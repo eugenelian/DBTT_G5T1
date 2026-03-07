@@ -29,6 +29,8 @@ const symptomsList = [
   "Loss of Appetite"
 ];
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 const Diagnosis = () => {
   const { patients, selectedPatientId, updatePatientSymptoms } = usePatientStore();
   const patient = patients.find(p => p.id === selectedPatientId);
@@ -46,7 +48,7 @@ const Diagnosis = () => {
     updatePatientSymptoms(patient.id, selectedSymptoms, remarks);
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:8000/api/v1/diagnosis", {
+      const res = await fetch(`${BASE_URL}/api/v1/diagnosis`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ patient_id: patient.id, symptoms: selectedSymptoms, remarks })

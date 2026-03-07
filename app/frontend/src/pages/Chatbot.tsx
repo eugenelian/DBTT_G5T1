@@ -24,6 +24,8 @@ function parseAssistantResponse(text: string) {
   return { markdownContent, followUpQuestion };
 }
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 const Chatbot = () => {
   const [id, setId] = useState(crypto.randomUUID());
   const [messages, setMessages] = useState<Message[]>([]);
@@ -43,7 +45,7 @@ const Chatbot = () => {
     const queryToSend = backendQuery ?? displayText;
 
     try {
-      const res = await fetch("http://localhost:8000/api/v1/chat", {
+      const res = await fetch(`${BASE_URL}/api/v1/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

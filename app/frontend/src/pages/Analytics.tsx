@@ -1,25 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { RefreshCw } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
-  RadarChart,
-  Radar,
-  PolarGrid,
-  PolarAngleAxis,
-  PolarRadiusAxis
-} from "recharts";
-import { Activity, Users, Heart, Thermometer, TrendingUp, AlertTriangle } from "lucide-react";
+import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import { Users, Heart, Thermometer, AlertTriangle } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface AnalyticsData {
@@ -71,6 +54,7 @@ const StatCard = ({ icon: Icon, label, value, sub }: { icon: React.ElementType; 
 
 const PAGE_TITLE = "Patient Analytics";
 const PAGE_SUBTITLE = "Visualise Patient Analytics";
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 const Analytics = () => {
   const [data, setData] = useState<AnalyticsData | null>(null);
@@ -80,7 +64,7 @@ const Analytics = () => {
   const fetchAnalytics = () => {
     setLoading(true);
     setError(null);
-    fetch("http://localhost:8000/api/v1/analytics")
+    fetch(`${BASE_URL}/api/v1/analytics`)
       .then(r => {
         if (!r.ok) throw new Error("Failed to fetch");
         return r.json();
