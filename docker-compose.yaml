@@ -25,10 +25,9 @@ services:
       dockerfile: app/frontend/Dockerfile
     ports:
       - "3000:80"
-    env_file:
-      - .env
     environment:
       ENV_TYPE: production
+      VITE_API_URL: "http://ai-clinical-assistant-backend:8000"
     depends_on:
       - ai-clinical-assistant-backend
     restart: unless-stopped
