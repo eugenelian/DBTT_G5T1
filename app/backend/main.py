@@ -24,6 +24,13 @@ load_dotenv()
 # Instantiate FastAPI Router
 router = APIRouter()
 
+# Define allowed origins
+allowed_origins = [
+    "http://localhost:3000",  # local dev frontend
+    "http://ai-clinical-assistant-frontend:3000",  # Docker Frontend Container
+    "https://dbtt-g5t1-frontend-production.up.railway.app",  # Railway frontend
+]
+
 
 @router.get("/config")
 def config(settings: Settings = Depends(get_settings)):
@@ -118,7 +125,8 @@ def create_app() -> FastAPI:
     # TODO: Restrict allowed origins here
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],
+        allow_origins=allowed_origins,
+        allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
     )
