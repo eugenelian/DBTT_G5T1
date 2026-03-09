@@ -48,3 +48,12 @@ class ChatResponse(Document):
         name = "chat_responses"
 
     model_config = ConfigDict(extra="ignore")
+
+
+class DiagnosisRequest(BaseModel):
+    symptoms: list[str] = Field(
+        default_factory=list, description="List of symptoms to generate diagnosis for"
+    )
+    remarks: Optional[str] = Field(default=None, description="Remarks from doctor")
+
+    model_config = ConfigDict(extra="ignore")

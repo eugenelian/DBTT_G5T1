@@ -26,7 +26,7 @@ router = APIRouter()
 
 # Define allowed origins
 allowed_origins = [
-    "http://localhost:3000",  # local dev frontend
+    "http://localhost:5173",  # local dev frontend
     "http://ai-clinical-assistant-frontend:3000",  # Docker Frontend Container
     "https://dbtt-g5t1-frontend-production.up.railway.app",  # Railway frontend
     "https://dbttg5t1frontend-production.up.railway.app",  # Nginx frontend
