@@ -1,6 +1,6 @@
 import logging
 
-from core.dependencies import get_patient_data
+from data.data_manager import get_patient_data
 from fastapi import APIRouter, Depends, status
 from pandas import DataFrame
 from schemas.patient_analytics import PatientsAnalyticsResponse
