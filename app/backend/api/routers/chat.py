@@ -1,7 +1,7 @@
 import logging
 from uuid import uuid4
 
-from core.dependencies import get_rag_workflow
+from core.dependencies import get_diagnosis_workflow, get_rag_workflow
 from database.mongodb import get_conversation_history
 from fastapi import APIRouter, Depends, status
 from schemas.chat import ChatRequest, ChatResponse, DiagnosisRequest
@@ -41,7 +41,7 @@ async def chat(
 )
 async def diagnosis(
     request_data: DiagnosisRequest,
-    rag_workflow: RAGWorkflow = Depends(get_rag_workflow),
+    diagnosis_workflow: RAGWorkflow = Depends(get_diagnosis_workflow),
 ):
     # Compile User Query
     user_query = f"Patient has the following symptoms: {request_data.symptoms}.\nDoctor Remarks: {request_data.remarks if request_data.remarks else "NIL"}\nShare some possible diagnosis without any follow up questions."
@@ -55,4 +55,6 @@ async def diagnosis(
     }
 
     # Run the pipeline
-    return await rag_workflow.run_pipeline(state=data_dict, conversation_history=[])
+    return await diagnosis_workflow.run_pipeline(
+        state=data_dict, conversation_history=[]
+    )

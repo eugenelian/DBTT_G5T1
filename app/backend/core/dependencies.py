@@ -55,6 +55,29 @@ def get_rag_workflow(
     return rag_workflow
 
 
+def get_diagnosis_workflow(
+    llm_client: ChatOpenAI | ChatGroq = Depends(get_llm_client),
+    prompt_manager: JinjaPromptManager = Depends(get_prompt_manager),
+) -> RAGWorkflow:
+    # Set up components
+    source_retrieval = SourceRetrievalComponent(
+        name="faiss_index",
+        num_sources=4,
+    )
+    response_synthesiser = ResponseSynthesiserComponent(
+        llm_client=llm_client,
+        prompt_manager=prompt_manager,
+        prompt_filename="automated_diagnosis.yaml",
+    )
+    # Set up workflow
+    diagnosis_workflow = RAGWorkflow(
+        source_retrieval=source_retrieval, response_synthesiser=response_synthesiser
+    )
+    # Build Graph and return
+    diagnosis_workflow.build_graph()
+    return diagnosis_workflow
+
+
 # Chest Pain Mapping between types and name
 CHEST_PAIN_MAP: dict[int, str] = {
     0: "Asymptomatic",
