@@ -6,7 +6,7 @@ export interface Patient {
   age: number;
   gender: string;
   condition: string;
-  priority: "high" | "medium" | "low";
+  priority: "Urgent" | "Non Urgent";
   status: "waiting" | "assigned" | "seen";
   assignedDoctor?: string;
   arrivalTime: string;
@@ -24,12 +24,30 @@ interface PatientStore {
 }
 
 const initialPatients: Patient[] = [
-  { id: "P001", name: "John Miller", age: 45, gender: "Male", condition: "Chest Pain", priority: "high", status: "waiting", arrivalTime: "08:15 AM" },
-  { id: "P002", name: "Emma Watson", age: 32, gender: "Female", condition: "Migraine", priority: "medium", status: "waiting", arrivalTime: "08:30 AM" },
-  { id: "P003", name: "Robert Lee", age: 67, gender: "Male", condition: "Diabetes Follow-up", priority: "low", status: "waiting", arrivalTime: "08:45 AM" },
-  { id: "P004", name: "Lisa Chen", age: 28, gender: "Female", condition: "Fever & Cough", priority: "medium", status: "waiting", arrivalTime: "09:00 AM" },
-  { id: "P005", name: "David Brown", age: 55, gender: "Male", condition: "Back Pain", priority: "low", status: "waiting", arrivalTime: "09:15 AM" },
-  { id: "P006", name: "Maria Garcia", age: 40, gender: "Female", condition: "Allergic Reaction", priority: "high", status: "waiting", arrivalTime: "09:30 AM" }
+  { id: "P001", name: "John Miller", age: 45, gender: "Male", condition: "Chest Pain", priority: "Urgent", status: "waiting", arrivalTime: "08:15 AM" },
+  { id: "P002", name: "Emma Watson", age: 32, gender: "Female", condition: "Migraine", priority: "Non Urgent", status: "waiting", arrivalTime: "08:30 AM" },
+  {
+    id: "P003",
+    name: "Robert Lee",
+    age: 67,
+    gender: "Male",
+    condition: "Diabetes Follow-up",
+    priority: "Non Urgent",
+    status: "waiting",
+    arrivalTime: "08:45 AM"
+  },
+  { id: "P004", name: "Lisa Chen", age: 28, gender: "Female", condition: "Fever & Cough", priority: "Non Urgent", status: "waiting", arrivalTime: "09:00 AM" },
+  { id: "P005", name: "David Brown", age: 55, gender: "Male", condition: "Back Pain", priority: "Non Urgent", status: "waiting", arrivalTime: "09:15 AM" },
+  {
+    id: "P006",
+    name: "Maria Garcia",
+    age: 40,
+    gender: "Female",
+    condition: "Allergic Reaction",
+    priority: "Urgent",
+    status: "waiting",
+    arrivalTime: "09:30 AM"
+  }
 ];
 
 export const usePatientStore = create<PatientStore>(set => ({
