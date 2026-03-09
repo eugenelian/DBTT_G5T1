@@ -23,7 +23,12 @@ def get_llm_client(request: Request) -> ChatOpenAI | ChatGroq:
 
 
 def get_prompt_manager() -> JinjaPromptManager:
-    """Gets the Jinja2 prompt manager."""
+    """
+    Gets the Jinja2 prompt manager.
+
+    Returns:
+        JinjaPromptManager: Prompt Manager to manage Jinja Prompts
+    """
     return JinjaPromptManager()
 
 
@@ -31,6 +36,16 @@ def get_rag_workflow(
     llm_client: ChatOpenAI | ChatGroq = Depends(get_llm_client),
     prompt_manager: JinjaPromptManager = Depends(get_prompt_manager),
 ) -> RAGWorkflow:
+    """
+    Gets the RAG Pipeline.
+
+    Args:
+        llm_client (ChatOpenAI | ChatGroq): LLM Client depending on get_llm_client
+        prompt_manager (JinjaPromptManager): Jinja Prompt Manager depending on get_prompt_manager
+
+    Returns:
+        RAGWorkflow: RAG Workflow object for general enquires.
+    """
     # Set up components
     source_retrieval = SourceRetrievalComponent(
         name="faiss_index",
@@ -54,6 +69,16 @@ def get_diagnosis_workflow(
     llm_client: ChatOpenAI | ChatGroq = Depends(get_llm_client),
     prompt_manager: JinjaPromptManager = Depends(get_prompt_manager),
 ) -> RAGWorkflow:
+    """
+    Gets the RAG Pipeline specifically for diagnosis workflow.
+
+    Args:
+        llm_client (ChatOpenAI | ChatGroq): LLM Client depending on get_llm_client
+        prompt_manager (JinjaPromptManager): Jinja Prompt Manager depending on get_prompt_manager
+
+    Returns:
+        RAGWorkflow: RAG Workflow object for diagnosis.
+    """
     # Set up components
     source_retrieval = SourceRetrievalComponent(
         name="faiss_index",
