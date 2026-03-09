@@ -18,7 +18,7 @@ class OverviewStats(BaseModel):
         default=0, description="Total number of urgent patients handled"
     )
     non_urgent_patients: int = Field(
-        default=0, description="Total number of urgent patients handled"
+        default=0, description="Total number of non-urgent patients handled"
     )
     overall_urgency_rate: float = Field(
         default=0.0, description="Proportion of total patients that are urgent cases"
@@ -50,11 +50,11 @@ class UrgencyFieldGrouping(UrgencyStats):
 class Comorbidity(BaseModel):
     no: UrgencyStats = Field(
         default_factory=UrgencyStats,
-        description="Urgency Stats that do not have the comorbiditity",
+        description="Urgency Stats that do not have the comorbidity",
     )
     yes: UrgencyStats = Field(
         default_factory=UrgencyStats,
-        description="Urgency Stats that have the comorbiditity",
+        description="Urgency Stats that have the comorbidity",
     )
 
 
@@ -178,9 +178,6 @@ class PatientsAnalyticsResponse(BaseModel):
     )
     urgency_by_bmi_category: List[UrgencyFieldGrouping] = Field(
         default_factory=list, description="List of urgency grouping by BMI category"
-    )
-    urgency_by_age_group: List[UrgencyFieldGrouping] = Field(
-        default_factory=list, description="List of urgency grouping by age group"
     )
 
     # Urgency by comorbidities (Hypertension, Heart Disease, Exercise Angina)

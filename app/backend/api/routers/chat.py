@@ -44,7 +44,7 @@ async def diagnosis(
     rag_workflow: RAGWorkflow = Depends(get_rag_workflow),
 ):
     # Compile User Query
-    user_query = f"Patient has the following symptoms: {request_data.symptoms}.\nDoctor Remarks: {request_data.remarks if request_data.remarks else "NIL"}\nWhat are some possible diagnosis?"
+    user_query = f"Patient has the following symptoms: {request_data.symptoms}.\nDoctor Remarks: {request_data.remarks if request_data.remarks else "NIL"}\nShare some possible diagnosis without any follow up questions."
 
     # Extract out critical information from response model
     uuid_str: str = str(uuid4())

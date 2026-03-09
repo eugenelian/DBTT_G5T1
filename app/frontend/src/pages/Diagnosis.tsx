@@ -32,14 +32,8 @@ const symptomsList = [
 
 function parseAssistantResponse(text: string) {
   const cleaned = text.replace(/\\n/g, "\n");
-
-  const match = cleaned.match(/<follow_up_question>(.*?)<\/follow_up_question>/s);
-
-  const followUpQuestion = match ? match[1].trim() : null;
-
   const markdownContent = cleaned.replace(/<[^>]+>/g, "").trim();
-
-  return { markdownContent, followUpQuestion };
+  return markdownContent;
 }
 
 const BASE_URL = import.meta.env.VITE_API_URL;
@@ -67,8 +61,7 @@ const Diagnosis = () => {
         body: JSON.stringify({ symptoms: selectedSymptoms, remarks: remarks })
       });
       const data = await res.json();
-      const parsed = parseAssistantResponse(data.content || "No response");
-      setDiagnosisResult(parsed.markdownContent);
+      setDiagnosisResult(parseAssistantResponse(data.content || "No response"));
     } catch {
       setDiagnosisResult("⚠️ An error occurred while running the diagnosis. Please try again later.");
     } finally {
