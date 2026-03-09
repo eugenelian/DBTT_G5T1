@@ -3,9 +3,11 @@ import os
 from contextlib import asynccontextmanager
 
 from api.routers import analytics, chat
-from config.config import LLM_CLIENT
+from config.config import LLM_CLIENT, URGENCY_CLASSIFIER, URGENCY_SCALERS
 from core.factories import (
     make_llm_client,
+    make_urgency_classifier,
+    make_urgency_classifier_scalars,
     setup_langsmith_config,
 )
 from core.settings import Settings, get_settings
@@ -28,7 +30,6 @@ router = APIRouter()
 allowed_origins = [
     "http://localhost:5173",  # local dev frontend
     "http://ai-clinical-assistant-frontend:3000",  # Docker Frontend Container
-    "https://dbtt-g5t1-frontend-production.up.railway.app",  # Railway frontend
     "https://dbttg5t1frontend-production.up.railway.app",  # Nginx frontend
 ]
 
@@ -55,9 +56,13 @@ async def lifespan(app: FastAPI):
     # Set up any clients used here
     setup_langsmith_config(s)
     llm_client = make_llm_client(s)
+    urgency_classifier = make_urgency_classifier(s)
+    urgency_scalers = make_urgency_classifier_scalars()
 
     # Storage in app state for future use
     setattr(app.state, LLM_CLIENT, llm_client)
+    setattr(app.state, URGENCY_CLASSIFIER, urgency_classifier)
+    setattr(app.state, URGENCY_SCALERS, urgency_scalers)
 
     # Init DB here
     pymongo_client = await init_db(s)

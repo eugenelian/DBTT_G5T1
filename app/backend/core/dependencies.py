@@ -1,10 +1,14 @@
 import logging
 
-from config.config import LLM_CLIENT
+from config.config import LLM_CLIENT, URGENCY_CLASSIFIER, URGENCY_SCALERS
 from fastapi import Depends, Request
 from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
 from prompts.prompt_manager import JinjaPromptManager
+from sklearn.feature_selection import RFE
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import GridSearchCV
+from sklearn.preprocessing import MinMaxScaler
 from workflows.components.response_synthesiser import ResponseSynthesiserComponent
 from workflows.components.source_retrieval import SourceRetrievalComponent
 from workflows.rag_workflow import RAGWorkflow
@@ -20,6 +24,26 @@ def get_llm_client(request: Request) -> ChatOpenAI | ChatGroq:
         ChatOpenAI | ChatGroq: The Langchain ChatOpenAI or ChatGroq instance
     """
     return getattr(request.app.state, LLM_CLIENT)
+
+
+def get_urgency_classifier(request: Request) -> LogisticRegression | RFE | GridSearchCV:
+    """
+    Gets the appropriate urgency classifier.
+
+    Returns:
+        LogisticRegression | RFE | GridSearchCV: The urgency classification instance.
+    """
+    return getattr(request.app.state, URGENCY_CLASSIFIER)
+
+
+def get_urgency_scalers(request: Request) -> dict[str, MinMaxScaler]:
+    """
+    Gets the dictionary of MinMaxScalers fitted on training data.
+
+    Returns:
+        dict[str, MinMaxScaler]: Dictionary mapping numeric column names to respective MinMaxScaler.
+    """
+    return getattr(request.app.state, URGENCY_SCALERS)
 
 
 def get_prompt_manager() -> JinjaPromptManager:

@@ -1,6 +1,7 @@
 import logging
 import re
 from functools import lru_cache
+from typing import Literal
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -10,6 +11,8 @@ _PATTERN = re.compile(
     r"ID|ENDPOINT|SECRET|ALGORITHM|CONNECTION_STRING|HOST|PORT|ACCESS_KEY|KEY|URI",
     re.IGNORECASE,
 )
+
+URGENCY_CLASSIFIER_MODEL_TYPES = Literal["vanilla", "rfe", "grid"]
 
 
 class Settings(BaseSettings):
@@ -29,6 +32,9 @@ class Settings(BaseSettings):
     LANGCHAIN_API_KEY: str | None = None
     LANGCHAIN_TRACING_V2: str = "false"
     LANGCHAIN_PROJECT: str | None = None
+
+    # Urgency Classification Type
+    URGENCY_CLASSIFIER_TYPE: URGENCY_CLASSIFIER_MODEL_TYPES = "grid"
 
     # MongoDB Cluster
     MONGODB_URI: str | None = None
