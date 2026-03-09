@@ -11,6 +11,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.preprocessing import MinMaxScaler
 from workflows.components.response_synthesiser import ResponseSynthesiserComponent
 from workflows.components.source_retrieval import SourceRetrievalComponent
+from workflows.components.urgency_classifier import UrgencyClassfierComponent
 from workflows.rag_workflow import RAGWorkflow
 
 logger = logging.getLogger(__name__)
@@ -54,6 +55,28 @@ def get_prompt_manager() -> JinjaPromptManager:
         JinjaPromptManager: Prompt Manager to manage Jinja Prompts
     """
     return JinjaPromptManager()
+
+
+def get_urgency_classifier_component(
+    urgency_classifier: LogisticRegression | RFE | GridSearchCV = Depends(
+        get_urgency_classifier
+    ),
+    urgency_scalers: dict[str, MinMaxScaler] = Depends(get_urgency_scalers),
+) -> UrgencyClassfierComponent:
+    """
+    Gets the Urgency Classfier Component.
+
+    Args:
+        urgency_classifier (LogisticRegression | RFE | GridSearchCV): Urgency Classifier Model
+        urgency_scalers (dict[str, MinMaxScaler]): MinMaxScalers used for urgency.
+
+    Returns:
+        UrgencyClassfierComponent: Urgency Classfier Component object for general enquires.
+    """
+    return UrgencyClassfierComponent(
+        urgency_classifier=urgency_classifier,
+        urgency_scalers=urgency_scalers,
+    )
 
 
 def get_rag_workflow(
