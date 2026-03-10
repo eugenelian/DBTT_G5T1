@@ -58,7 +58,7 @@ def get_patient_data() -> DataFrame | None:
         ValueError: If any issues faced during getting patient data.
 
     Returns:
-        DataFrame | None: Returns extracted DataFrame or None if not found.
+        DataFrame: Returns extracted DataFrame.
     """
     try:
         # Extract DataFrame using utils function

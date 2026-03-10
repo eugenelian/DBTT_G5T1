@@ -14,7 +14,7 @@
       "remarks": "Patient might have common flu."
     }
   },
-  "api/v1/ml/diagnosis": {
+  "api/v1/ml/urgency": {
     "operation": "POST",
     "request_data": {
       "age": 49.0,
