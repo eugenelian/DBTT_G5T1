@@ -64,14 +64,14 @@ def get_urgency_classifier_component(
     urgency_scalers: dict[str, MinMaxScaler] = Depends(get_urgency_scalers),
 ) -> UrgencyClassifierComponent:
     """
-    Gets the Urgency Classfier Component.
+    Gets the Urgency Classifier Component.
 
     Args:
         urgency_classifier (LogisticRegression | RFE | GridSearchCV): Urgency Classifier Model
         urgency_scalers (dict[str, MinMaxScaler]): MinMaxScalers used for urgency.
 
     Returns:
-        UrgencyClassfierComponent: Urgency Classfier Component object for general enquires.
+        UrgencyClassfierComponent: Urgency Classifier Component object for general enquiries.
     """
     return UrgencyClassifierComponent(
         urgency_classifier=urgency_classifier,
