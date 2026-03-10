@@ -1,11 +1,12 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { Users, BarChart3, MessageSquare, Stethoscope } from "lucide-react";
+import { Users, BarChart3, MessageSquare, Stethoscope, Activity } from "lucide-react";
 
 const navItems = [
   { to: "/", icon: Users, label: "Patient Queue" },
   { to: "/analytics", icon: BarChart3, label: "Analytics" },
   { to: "/chatbot", icon: MessageSquare, label: "AI Chatbot" },
-  { to: "/diagnosis", icon: Stethoscope, label: "Automated Diagnosis" }
+  { to: "/diagnosis", icon: Stethoscope, label: "Automated Diagnosis" },
+  { to: "/triage", icon: Activity, label: "Auto Triage" }
 ];
 
 const AppSidebar = () => {

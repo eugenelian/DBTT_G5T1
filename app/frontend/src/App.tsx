@@ -8,6 +8,7 @@ import PatientQueue from "@/pages/PatientQueue";
 import Analytics from "@/pages/Analytics";
 import Chatbot from "@/pages/Chatbot";
 import Diagnosis from "@/pages/Diagnosis";
+import Triage from "@/pages/Triage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/chatbot" element={<Chatbot />} />
             <Route path="/diagnosis" element={<Diagnosis />} />
+            <Route path="/triage" element={<Triage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
