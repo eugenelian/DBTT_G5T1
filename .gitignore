@@ -212,6 +212,9 @@ data/*.rdata
 data/*.xlsx
 data/*.xls
 
+# Model Files
+notebooks/models
+
 # Compiled PDFs of documentation
 app/backend/prepdocslib/docs/*.pdf
 

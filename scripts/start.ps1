@@ -14,7 +14,7 @@ $projectRoot = Resolve-Path "$scriptDir\.."
 # Start Frontend Server
 Set-Location -Path "$projectRoot\app\frontend"
 
-Write-Host "🚀 Starting frontend (Vite dev server)..."
+Write-Host "🚀 Starting Vite Dev frontend..."
 
 # Start frontend in a background job
 $frontendJob = Start-Job -ScriptBlock {

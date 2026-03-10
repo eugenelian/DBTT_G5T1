@@ -1,18 +1,18 @@
 import logging
 
-import numpy as np
-import pandas as pd
-from config.config import LLM_CLIENT
+from config.config import LLM_CLIENT, URGENCY_CLASSIFIER, URGENCY_SCALERS
 from fastapi import Depends, Request
 from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
-from pandas import DataFrame
 from prompts.prompt_manager import JinjaPromptManager
+from sklearn.feature_selection import RFE
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import GridSearchCV
+from sklearn.preprocessing import MinMaxScaler
 from workflows.components.response_synthesiser import ResponseSynthesiserComponent
 from workflows.components.source_retrieval import SourceRetrievalComponent
+from workflows.components.urgency_classifier import UrgencyClassifierComponent
 from workflows.rag_workflow import RAGWorkflow
-
-from utils.file_management import extract_df_from_csv
 
 logger = logging.getLogger(__name__)
 
@@ -27,15 +27,72 @@ def get_llm_client(request: Request) -> ChatOpenAI | ChatGroq:
     return getattr(request.app.state, LLM_CLIENT)
 
 
+def get_urgency_classifier(request: Request) -> LogisticRegression | RFE | GridSearchCV:
+    """
+    Gets the appropriate urgency classifier.
+
+    Returns:
+        LogisticRegression | RFE | GridSearchCV: The urgency classification instance.
+    """
+    return getattr(request.app.state, URGENCY_CLASSIFIER)
+
+
+def get_urgency_scalers(request: Request) -> dict[str, MinMaxScaler]:
+    """
+    Gets the dictionary of MinMaxScalers fitted on training data.
+
+    Returns:
+        dict[str, MinMaxScaler]: Dictionary mapping numeric column names to respective MinMaxScaler.
+    """
+    return getattr(request.app.state, URGENCY_SCALERS)
+
+
 def get_prompt_manager() -> JinjaPromptManager:
-    """Gets the Jinja2 prompt manager."""
+    """
+    Gets the Jinja2 prompt manager.
+
+    Returns:
+        JinjaPromptManager: Prompt Manager to manage Jinja Prompts
+    """
     return JinjaPromptManager()
+
+
+def get_urgency_classifier_component(
+    urgency_classifier: LogisticRegression | RFE | GridSearchCV = Depends(
+        get_urgency_classifier
+    ),
+    urgency_scalers: dict[str, MinMaxScaler] = Depends(get_urgency_scalers),
+) -> UrgencyClassifierComponent:
+    """
+    Gets the Urgency Classifier Component.
+
+    Args:
+        urgency_classifier (LogisticRegression | RFE | GridSearchCV): Urgency Classifier Model
+        urgency_scalers (dict[str, MinMaxScaler]): MinMaxScalers used for urgency.
+
+    Returns:
+        UrgencyClassifierComponent: Urgency Classifier Component object for general enquiries.
+    """
+    return UrgencyClassifierComponent(
+        urgency_classifier=urgency_classifier,
+        urgency_scalers=urgency_scalers,
+    )
 
 
 def get_rag_workflow(
     llm_client: ChatOpenAI | ChatGroq = Depends(get_llm_client),
     prompt_manager: JinjaPromptManager = Depends(get_prompt_manager),
 ) -> RAGWorkflow:
+    """
+    Gets the RAG Pipeline.
+
+    Args:
+        llm_client (ChatOpenAI | ChatGroq): LLM Client depending on get_llm_client
+        prompt_manager (JinjaPromptManager): Jinja Prompt Manager depending on get_prompt_manager
+
+    Returns:
+        RAGWorkflow: RAG Workflow object for general enquires.
+    """
     # Set up components
     source_retrieval = SourceRetrievalComponent(
         name="faiss_index",
@@ -55,52 +112,34 @@ def get_rag_workflow(
     return rag_workflow
 
 
-# Chest Pain Mapping between types and name
-CHEST_PAIN_MAP: dict[int, str] = {
-    0: "Asymptomatic",
-    1: "Atypical Angina",
-    2: "Non-Anginal",
-    3: "Typical Angina",
-    4: "Severe Angina",
-}
+def get_diagnosis_workflow(
+    llm_client: ChatOpenAI | ChatGroq = Depends(get_llm_client),
+    prompt_manager: JinjaPromptManager = Depends(get_prompt_manager),
+) -> RAGWorkflow:
+    """
+    Gets the RAG Pipeline specifically for diagnosis workflow.
 
+    Args:
+        llm_client (ChatOpenAI | ChatGroq): LLM Client depending on get_llm_client
+        prompt_manager (JinjaPromptManager): Jinja Prompt Manager depending on get_prompt_manager
 
-def get_patient_data() -> DataFrame | None:
-    # Indicate filename here to not expose to frontend for changes
-    filename: str = "patient_priority_modified.csv"
-
-    # Extract DataFrame using utils function
-    try:
-        df = extract_df_from_csv(filename=filename)
-    except Exception as exc:
-        logger.exception(exc)
-        return None
-
-    # Modifies DataFrame to enhance data
-    df["age_group"] = pd.cut(
-        df["age"],
-        bins=[0, 30, 40, 50, 60, 70, np.inf],
-        labels=["<30", "30-40", "40-50", "50-60", "60-70", "70+"],
-        right=False,
+    Returns:
+        RAGWorkflow: RAG Workflow object for diagnosis.
+    """
+    # Set up components
+    source_retrieval = SourceRetrievalComponent(
+        name="faiss_index",
+        num_sources=4,
     )
-    df["bp_category"] = pd.cut(
-        df["blood pressure"],
-        bins=[0, 120, 130, 140, np.inf],
-        labels=[
-            "Normal (<120)",
-            "Elevated (120-129)",
-            "Stage 1 (130-139)",
-            "Stage 2 (≥140)",
-        ],
-        right=False,
+    response_synthesiser = ResponseSynthesiserComponent(
+        llm_client=llm_client,
+        prompt_manager=prompt_manager,
+        prompt_filename="automated_diagnosis.yaml",
     )
-    df["bmi_category"] = pd.cut(
-        df["bmi"],
-        bins=[0, 18.5, 25, 30, np.inf],
-        labels=["Underweight", "Normal", "Overweight", "Obese"],
-        right=False,
+    # Set up workflow
+    diagnosis_workflow = RAGWorkflow(
+        source_retrieval=source_retrieval, response_synthesiser=response_synthesiser
     )
-    df["chest_pain_label"] = df["chest pain type"].map(CHEST_PAIN_MAP).fillna("Unknown")
-
-    # Returns DataFrame here
-    return df
+    # Build Graph and return
+    diagnosis_workflow.build_graph()
+    return diagnosis_workflow

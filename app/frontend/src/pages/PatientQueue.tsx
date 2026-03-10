@@ -9,9 +9,8 @@ import { useState } from "react";
 const doctors = ["Dr. Sarah Chen", "Dr. James Park", "Dr. Emily Taylor", "Dr. Michael Adams"];
 
 const priorityColors: Record<string, string> = {
-  high: "bg-destructive/10 text-destructive border-destructive/20",
-  medium: "bg-warning/10 text-warning border-warning/20",
-  low: "bg-success/10 text-success border-success/20"
+  Urgent: "bg-destructive/10 text-destructive border-destructive/20",
+  "Non Urgent": "bg-success/10 text-success border-success/20"
 };
 
 const statusIcons: Record<string, React.ReactNode> = {

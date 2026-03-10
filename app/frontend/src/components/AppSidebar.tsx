@@ -1,11 +1,12 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { Users, BarChart3, MessageSquare, Stethoscope } from "lucide-react";
+import { Users, BarChart3, MessageSquare, Stethoscope, Activity } from "lucide-react";
 
 const navItems = [
   { to: "/", icon: Users, label: "Patient Queue" },
   { to: "/analytics", icon: BarChart3, label: "Analytics" },
   { to: "/chatbot", icon: MessageSquare, label: "AI Chatbot" },
-  { to: "/diagnosis", icon: Stethoscope, label: "Diagnosis" }
+  { to: "/diagnosis", icon: Stethoscope, label: "Automated Diagnosis" },
+  { to: "/triage", icon: Activity, label: "Automated Triage" }
 ];
 
 const AppSidebar = () => {
@@ -36,10 +37,10 @@ const AppSidebar = () => {
           );
         })}
       </nav>
-      <div className="p-4 mx-3 mb-4 rounded-lg bg-sidebar-accent/50">
+      {/* <div className="p-4 mx-3 mb-4 rounded-lg bg-sidebar-accent/50">
         <p className="text-xs text-sidebar-foreground/60">Logged in as</p>
         <p className="text-sm font-medium text-sidebar-foreground">Dr. Sarah Chen</p>
-      </div>
+      </div> */}
     </aside>
   );
 };

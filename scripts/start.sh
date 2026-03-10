@@ -14,7 +14,7 @@ cd ../
 
 
 # Build frontend
-echo "🚀 Starting frontend (Vite dev server)..."
+echo "🚀 Starting Vite Dev frontend..."
 cd ./app/frontend
 
 # Install dependencies if needed
