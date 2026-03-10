@@ -61,6 +61,12 @@ class UrgencyClassifierComponent:
 
         # Numeric Columns are normalised using MinMaxScaler to constrain values between 0 and 1
         for col in NUMERIC_COLS:
+            scaler = self.urgency_scalers.get(col)
+            if not scaler:
+                logger.warning(
+                    "Scaler for column '%s' not found. Skipping scaling.", col
+                )
+                continue
             # For val/test datasets, we use the existing scaler from scalers dict provided
             X[col] = self.urgency_scalers.get(col).transform(X[[col]])
 

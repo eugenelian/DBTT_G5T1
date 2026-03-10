@@ -65,7 +65,7 @@ class DiagnosisRequest(BaseModel):
 
     @field_validator("symptoms", mode="before")
     @classmethod
-    def sanitize_symptoms(cls, v):
+    def sanitize_symptoms(cls, v: list) -> list:
         if isinstance(v, list):
             return [
                 item.replace("]]>", "] ]>") if isinstance(item, str) else item

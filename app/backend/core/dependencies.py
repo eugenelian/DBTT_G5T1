@@ -71,7 +71,7 @@ def get_urgency_classifier_component(
         urgency_scalers (dict[str, MinMaxScaler]): MinMaxScalers used for urgency.
 
     Returns:
-        UrgencyClassfierComponent: Urgency Classifier Component object for general enquiries.
+        UrgencyClassifierComponent: Urgency Classifier Component object for general enquiries.
     """
     return UrgencyClassifierComponent(
         urgency_classifier=urgency_classifier,
