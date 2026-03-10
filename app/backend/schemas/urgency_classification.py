@@ -31,7 +31,7 @@ class TriageRequest(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
 
-class TriageResponse(BaseModel):
+class TriageResponse(TriageRequest):
     urgency: int = Field(
         ..., description="Indicator on whether patient is urgent, 0 or 1."
     )

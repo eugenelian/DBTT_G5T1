@@ -2,7 +2,7 @@ import logging
 
 import pandas as pd
 from pandas import DataFrame
-from schemas.urgency_classification import TriageRequest, TriageResponse
+from schemas.urgency_classification import TriageRequest
 from sklearn.feature_selection import RFE
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GridSearchCV
@@ -32,7 +32,7 @@ FIXED_CATEGORIES = {
 }
 
 
-class UrgencyClassfierComponent:
+class UrgencyClassifierComponent:
     """
     The urgency classifier component classifies urgency based on the triage request data.
     """
@@ -64,13 +64,13 @@ class UrgencyClassfierComponent:
             # For val/test datasets, we use the existing scaler from scalers dict provided
             X[col] = self.urgency_scalers.get(col).transform(X[[col]])
 
-        print("Successfully processed numeric column(s)")
+        logger.debug("Successfully processed numeric column(s)")
 
         # Binary columns are converted to int
         for col in BINARY_COLS:
             X[col] = X[col].astype(int)
 
-        print("Successfully processed binary column(s)")
+        logger.debug("Successfully processed binary column(s)")
 
         # Categorical columns are encoded through converting the column into dummy encoding using get_dummies() (from pandas).
         for col in CATEGORICAL_COLS:
@@ -84,7 +84,7 @@ class UrgencyClassfierComponent:
             X = X.drop(columns=col)
             X = pd.concat([X, dummies], axis=1)
 
-        print("Successfully processed categorical column(s)")
+        logger.debug("Successfully processed categorical column(s)")
 
         return X
 
@@ -107,7 +107,7 @@ class UrgencyClassfierComponent:
         # Perform Preprocessing
         return self.preprocess_data(df)
 
-    def predict_single(self, X: DataFrame) -> TriageResponse:
+    def predict_single(self, X: DataFrame) -> int:
         """
         Predicts the urgency based on a single row DataFrame.
 
@@ -118,4 +118,4 @@ class UrgencyClassfierComponent:
             int: Integer containing whether to return
         """
         urgency = self.urgency_classifier.predict(X)
-        return TriageResponse(urgency=urgency[0])
+        return urgency[0]

@@ -2,7 +2,14 @@ from datetime import datetime
 from typing import List, Optional
 
 from beanie import Document
-from pydantic import UUID4, BaseModel, ConfigDict, Field, field_serializer
+from pydantic import (
+    UUID4,
+    BaseModel,
+    ConfigDict,
+    Field,
+    field_serializer,
+    field_validator,
+)
 from schemas import now_utc
 from schemas.source import Source
 from schemas.usage import ResponseMetadata
@@ -55,5 +62,24 @@ class DiagnosisRequest(BaseModel):
         default_factory=list, description="List of symptoms to generate diagnosis for"
     )
     remarks: Optional[str] = Field(default=None, description="Remarks from doctor")
+
+    @field_validator("symptoms", mode="before")
+    @classmethod
+    def sanitize_symptoms(cls, v: str) -> str:
+        return v.replace("]]>", "] ]>")
+
+    @field_validator("remarks", mode="before")
+    @classmethod
+    def sanitize_remarks(cls, v: Optional[str]) -> str:
+        if not v:
+            return "NIL"
+        return v.replace("]]>", "] ]>")
+
+    def get_user_prompt(self) -> str:
+        return (
+            f"Patient has the following symptoms: {self.symptoms}.\n"
+            f"Doctor Remarks: {self.remarks}\n"
+            "Share some possible diagnosis without any follow up questions."
+        )
 
     model_config = ConfigDict(extra="ignore")

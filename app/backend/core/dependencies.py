@@ -11,7 +11,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.preprocessing import MinMaxScaler
 from workflows.components.response_synthesiser import ResponseSynthesiserComponent
 from workflows.components.source_retrieval import SourceRetrievalComponent
-from workflows.components.urgency_classifier import UrgencyClassfierComponent
+from workflows.components.urgency_classifier import UrgencyClassifierComponent
 from workflows.rag_workflow import RAGWorkflow
 
 logger = logging.getLogger(__name__)
@@ -62,7 +62,7 @@ def get_urgency_classifier_component(
         get_urgency_classifier
     ),
     urgency_scalers: dict[str, MinMaxScaler] = Depends(get_urgency_scalers),
-) -> UrgencyClassfierComponent:
+) -> UrgencyClassifierComponent:
     """
     Gets the Urgency Classfier Component.
 
@@ -73,7 +73,7 @@ def get_urgency_classifier_component(
     Returns:
         UrgencyClassfierComponent: Urgency Classfier Component object for general enquires.
     """
-    return UrgencyClassfierComponent(
+    return UrgencyClassifierComponent(
         urgency_classifier=urgency_classifier,
         urgency_scalers=urgency_scalers,
     )

@@ -1,0 +1,31 @@
+{
+  "api/v1/chat": {
+    "operation": "POST",
+    "request_data": {
+      "user_query": "What are Heart Disease Symptoms",
+      "user_id": "8f947423-7219-4492-b154-9834cc6ce95e",
+      "session_id": "8f947423-7219-4492-b154-9834cc6ce95e"
+    }
+  },
+  "api/v1/chat/diagnosis": {
+    "operation": "POST",
+    "request_data": {
+      "symptoms": ["cough", "sore throat", "fever"],
+      "remarks": "Patient might have common flu."
+    }
+  },
+  "api/v1/ml/diagnosis": {
+    "operation": "POST",
+    "request_data": {
+      "age": 49.0,
+      "chest_pain_type": 3.0,
+      "blood_pressure": 160.0,
+      "max_heart_rate": 156.0,
+      "exercise_angina": 0,
+      "bmi": 18.0,
+      "hypertension": 0,
+      "heart_disease": 0,
+      "smoking_status": "never smoked"
+    }
+  }
+}

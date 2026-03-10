@@ -89,7 +89,9 @@ def make_urgency_classifier(s: Settings) -> LogisticRegression | RFE | GridSearc
         with open(filepath, "rb") as f:
             return pickle.load(f)
     except Exception as exc:
-        raise ValueError(f"Unable to set up Classification Model: {exc}")
+        raise ValueError(
+            f"Unable to set up Urgency Classification Model: {exc}"
+        ) from exc
 
 
 def make_urgency_classifier_scalars() -> dict[str, MinMaxScaler]:
@@ -112,4 +114,4 @@ def make_urgency_classifier_scalars() -> dict[str, MinMaxScaler]:
         with open(filepath, "rb") as f:
             return pickle.load(f)
     except Exception as exc:
-        raise ValueError(f"Unable to set up Classification Model: {exc}")
+        raise ValueError(f"Unable to set up Urgency Scalers: {exc}") from exc

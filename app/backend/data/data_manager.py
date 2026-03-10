@@ -54,6 +54,9 @@ def get_patient_data() -> DataFrame | None:
     """
     Function to extract patient data from csv.
 
+    Raises:
+        ValueError: If any issues faced during getting patient data.
+
     Returns:
         DataFrame | None: Returns extracted DataFrame or None if not found.
     """
@@ -91,7 +94,6 @@ def get_patient_data() -> DataFrame | None:
 
         # Returns DataFrame here
         return df
-    except Exception as exc:
-        logger.exception(exc)
 
-    return None
+    except Exception as exc:
+        raise ValueError(f"Error found in extracting DataFrame from csv: {exc}")
