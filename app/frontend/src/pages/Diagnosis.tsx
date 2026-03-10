@@ -30,7 +30,8 @@ const symptomsList = [
 ];
 
 function parseAssistantResponse(text: string) {
-  const markdownContent = text.replace(/<[^>]+>/g, "").trim();
+  const cleaned = text.replace(/\\n/g, "\n");
+  const markdownContent = cleaned.replace(/<[^>]+>/g, "").trim();
   return markdownContent;
 }
 

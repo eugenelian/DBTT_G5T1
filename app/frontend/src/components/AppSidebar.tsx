@@ -6,7 +6,7 @@ const navItems = [
   { to: "/analytics", icon: BarChart3, label: "Analytics" },
   { to: "/chatbot", icon: MessageSquare, label: "AI Chatbot" },
   { to: "/diagnosis", icon: Stethoscope, label: "Automated Diagnosis" },
-  { to: "/triage", icon: Activity, label: "Auto Triage" }
+  { to: "/triage", icon: Activity, label: "Automated Triage" }
 ];
 
 const AppSidebar = () => {

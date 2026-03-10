@@ -25,10 +25,10 @@ async def urgency_classification(
     ### Sample Hardcoded data
 
     request_data = TriageRequest(
-        age=49.0,
+        age=49,
         chest_pain_type=3.0,
-        blood_pressure=160.0,
-        max_heart_rate=156.0,
+        blood_pressure=160,
+        max_heart_rate=156,
         exercise_angina=0,
         bmi=18.0,
         hypertension=0,

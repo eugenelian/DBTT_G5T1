@@ -96,4 +96,6 @@ def get_patient_data() -> DataFrame:
         return df
 
     except Exception as exc:
-        raise ValueError(f"Error found in extracting DataFrame from csv: {exc}")
+        raise ValueError(
+            f"Error found in extracting DataFrame from csv: {exc}"
+        ) from exc
