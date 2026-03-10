@@ -50,7 +50,7 @@ def extract_df_from_csv(filename: str) -> DataFrame:
     return pd.read_csv(file_path, index_col=False)
 
 
-def get_patient_data() -> DataFrame | None:
+def get_patient_data() -> DataFrame:
     """
     Function to extract patient data from csv.
 
