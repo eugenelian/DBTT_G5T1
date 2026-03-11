@@ -12,7 +12,7 @@ SMOKING_STATUS = Literal[
 class TriageRequest(BaseModel):
     age: int = Field(..., description="Age of Patient")
     chest_pain_type: float = Field(
-        ..., min=1.0, max=4.0, description="Chest Pain Type (1, 2, 3, 4)"
+        ..., min=0.0, max=4.0, description="Chest Pain Type (0, 1, 2, 3, 4)"
     )
     blood_pressure: int = Field(..., description="Systolic Blood Pressure of Patient")
     max_heart_rate: int = Field(..., description="Maximum Heart Rate of Patient")
