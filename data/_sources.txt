@@ -1,7 +1,5 @@
 This txt file provides information of the sources in the data folder
-- patient_priority.csv: Clinic Triage data extracted from "https://www.kaggle.com/datasets/hossamahmedaly/patient-priority-classification"
-- patient_priority_modified.csv: Modified data from "patient_priority.csv" using notebook "triage_dataset_modification.ipynb"
 
-Unused:
-- 5v_cleandf.rdata: Hospital Triage and Patient History Raw Data extracted from "https://www.kaggle.com/datasets/maalona/hospital-triage-and-patient-history-data"
-- Hospital_Triage_and_Patient_History.csv: CSV data file converted from "5v_cleandf.rdata"
+Urgency Classification:
+- patient_priority.csv: Clinic Triage data extracted from "https://www.kaggle.com/datasets/hossamahmedaly/patient-priority-classification"
+- patient_priority_modified.csv: Modified data from "patient_priority.csv" using notebook "urgency_dataset_modifications.ipynb"
