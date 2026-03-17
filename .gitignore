@@ -213,7 +213,7 @@ data/*.xlsx
 data/*.xls
 
 # Model Files
-notebooks/models
+models
 
 # Frontend (Do not ignore lib custom functions)
 !app/frontend/src/lib
