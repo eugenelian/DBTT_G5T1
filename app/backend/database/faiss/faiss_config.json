@@ -45,7 +45,7 @@
     "https://www.healthhub.sg/health-conditions/diarrhoea",
     "https://www.healthhub.sg/health-conditions/headache"
   ],
-  "pdfs": ["2512.22553v1.pdf"],
+  "pdfs": ["liang_clinic_faq.pdf"],
   "metadata": {
     "chunk_size": 1000,
     "chunk_overlap": 200,

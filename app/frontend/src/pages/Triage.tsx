@@ -46,10 +46,11 @@ const initialForm: TriageForm = {
 };
 
 const CHEST_PAIN_OPTIONS = [
-  { value: "1", label: "Typical Angina" },
-  { value: "2", label: "Atypical Angina" },
-  { value: "3", label: "Non-Anginal Pain" },
-  { value: "4", label: "Asymptomatic" }
+  { value: "0.0", label: "Asymptomatic" },
+  { value: "1.0", label: "Non-Anginal Pain" },
+  { value: "2.0", label: "Atypical Angina" },
+  { value: "3.0", label: "Typical Angina" },
+  { value: "4.0", label: "Severe Angina" }
 ];
 
 const SMOKING_OPTIONS = [
@@ -143,19 +144,19 @@ const Triage = () => {
             <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div className="space-y-2">
                 <Label htmlFor="age">Age</Label>
-                <Input id="age" type="number" placeholder="e.g. 55" value={form.age} onChange={e => updateField("age", e.target.value)} />
+                <Input id="age" type="number" placeholder="e.g. 49" value={form.age} onChange={e => updateField("age", e.target.value)} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="bp">Systolic Blood Pressure</Label>
-                <Input id="bp" type="number" placeholder="e.g. 130" value={form.blood_pressure} onChange={e => updateField("blood_pressure", e.target.value)} />
+                <Input id="bp" type="number" placeholder="e.g. 160" value={form.blood_pressure} onChange={e => updateField("blood_pressure", e.target.value)} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="hr">Maximum Heart Rate</Label>
-                <Input id="hr" type="number" placeholder="e.g. 160" value={form.max_heart_rate} onChange={e => updateField("max_heart_rate", e.target.value)} />
+                <Input id="hr" type="number" placeholder="e.g. 156" value={form.max_heart_rate} onChange={e => updateField("max_heart_rate", e.target.value)} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="bmi">BMI</Label>
-                <Input id="bmi" type="number" step="0.1" placeholder="e.g. 27.5" value={form.bmi} onChange={e => updateField("bmi", e.target.value)} />
+                <Input id="bmi" type="number" step="0.1" placeholder="e.g. 18.0" value={form.bmi} onChange={e => updateField("bmi", e.target.value)} />
               </div>
             </CardContent>
           </Card>
