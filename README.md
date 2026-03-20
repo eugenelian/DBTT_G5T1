@@ -9,6 +9,7 @@ Code Repository for IS215 Digital Business (Technologies and Transformation) G5 
   - [Create a Virtual Environment](#create-a-virtual-environment)
   - [Install Dependencies](#install-dependencies)
 - [Project Structure](#project-structure)
+- [Setting up Environment](#setting-up-environment)
 - [Development](#development)
   - [Running Locally](#running-locally)
   - [Running with Docker](#running-with-docker)
@@ -61,6 +62,21 @@ uv sync
 ## Project Structure <a id="project-structure"></a>
 
 For more information on our project structure, please refer to the [Project Structure](./docs/PROJECT_STRUCTURE.md) guide.
+
+## Setting up Environment
+
+1. **Start with template:** Duplicate the `.env.sample` and rename the file as `.env`.
+
+2. **Set up API Keys:** Set up API keys and fill up missing fields in `.env`.
+
+   - **[Groq](https://console.groq.com/docs/quickstart):** Access to main model used in project (SLMs).
+   - **[OpenAI](https://developers.openai.com/api/docs/quickstart):** Access to the text embedding features and secondary model used in project (LLMs).
+   - **[LangSmith](https://docs.langchain.com/langsmith/create-account-api-key):** Access to monitoring capabilities to analyse orchestration layer.
+   - **[MongoDB](https://www.mongodb.com/resources/products/fundamentals/mongodb-connection-string):** Connects the application to a database to store patient details and chat history. Requires setting up a cluster to obtain connection string.
+
+3. **Configure environment:** Default fields in `.env.sample` should run, but fields can be adjusted to support different SLM/LLM/Embedding models, Tracing Project, Database name and Logging Level.
+
+4. **Duplicate environment:** Duplicate the `.env` file and paste it within the `app/backend` directory to run the FastAPI application.
 
 ## Development
 
