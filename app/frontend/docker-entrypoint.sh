@@ -1,9 +1,6 @@
 #!/bin/sh
 # Default value if not provided
-: "${VITE_API_URL:=https://dbttg5t1backend-production:8000}"
-
-# Export so envsubst can access it as a child process
-export VITE_API_URL
+: "${VITE_API_URL:=http://ai-clinical-assistant-backend:8000}"
 
 # Replace environment variables in the nginx template
 envsubst '$VITE_API_URL' < /etc/nginx/conf.d/nginx.conf.template > /etc/nginx/conf.d/default.conf
